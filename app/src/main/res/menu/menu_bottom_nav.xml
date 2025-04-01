@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--    https://develop-oj.tistory.com/12-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fragment_home"
+        android:title="메모"
+        android:icon="@drawable/note_alt_24px"/>
+    <item
+        android:id="@+id/fragment_search"
+        android:title="할 일"
+        android:icon="@drawable/checklist_24px"/>
+    <item
+        android:id="@+id/fragment_favorite"
+        android:title="캘린더"
+        android:icon="@drawable/calendar_month_24px"/>
+    <item
+        android:id="@+id/fragment_settings"
+        android:title="메뉴"
+        android:icon="@drawable/menu_24px"/>
+
+
+</menu>
