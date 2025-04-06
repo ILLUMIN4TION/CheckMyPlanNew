@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/radius"
+        android:gravity="center"
+        android:elevation="10dp">
+
+
+
+        <CalendarView
+            android:id="@+id/calView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        >
+        <TextView
+            android:id="@+id/calendarTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="02월24일"
+            android:textSize="30dp"
+            android:textStyle="bold"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="start
+"
+                android:layout_margin="10dp"
+                android:background="@drawable/radius"
+                android:backgroundTint="#f5f5f5"
+                android:gravity="center_vertical">
+
+                <CheckBox
+                    android:id="@+id/todayCheck1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </CheckBox>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/todayCheck1"
+                    android:layout_toRightOf="@+id/todayCheck1"
+                    android:text="모바일앱 과제 제출하기"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/todayCheck1"
+                    android:layout_toRightOf="@+id/todayCheck1"
+                    android:text="03.20 오후 11시 59분"
+                    android:textSize="10dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="start"
+                android:layout_margin="10dp"
+                android:background="@drawable/radius"
+                android:backgroundTint="#f5f5f5"
+                android:gravity="center_vertical">
+
+                <CheckBox
+                    android:id="@+id/todayCheck2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </CheckBox>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/todayCheck2"
+                    android:layout_toRightOf="@+id/todayCheck2"
+                    android:text="모바일앱 과제 제출하기"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/todayCheck2"
+                    android:layout_toRightOf="@+id/todayCheck2"
+                    android:text="03.20 오후 11시 59분"
+                    android:textSize="10dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="start"
+                android:layout_margin="10dp"
+                android:background="@drawable/radius"
+                android:backgroundTint="#f5f5f5"
+                android:gravity="center_vertical">
+
+                <CheckBox
+                    android:id="@+id/todayCheck3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </CheckBox>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/todayCheck3"
+                    android:layout_toRightOf="@+id/todayCheck3"
+                    android:text="모바일앱 과제 제출하기"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/todayCheck3"
+                    android:layout_toRightOf="@+id/todayCheck3"
+                    android:text="03.20 오후 11시 59분"
+                    android:textSize="10dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="start"
+                android:layout_margin="10dp"
+                android:background="@drawable/radius"
+                android:backgroundTint="#f5f5f5"
+                android:gravity="center_vertical">
+
+                <CheckBox
+                    android:id="@+id/todayCheck4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </CheckBox>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/todayCheck4"
+                    android:layout_toRightOf="@+id/todayCheck4"
+                    android:text="모바일앱 과제 제출하기"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/todayCheck4"
+                    android:layout_toRightOf="@+id/todayCheck4"
+                    android:text="03.20 오후 11시 59분"
+                    android:textSize="10dp" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/calendar_add_floating_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            app:iconTint="@color/white"
+            app:iconSize="14dp"
+            app:iconPadding="3dp"
+            android:backgroundTint="#f8f9f8"
+            android:text="일정 추가"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <FrameLayout
+            android:id="@+id/main_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
+            app:layout_constraintEnd_toEndOf="@+id/bottom_navigation_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/menu_bottom_nav"
+            app:labelVisibilityMode="unlabeled"
+            app:itemTextColor="@color/black"
+            app:itemIconTint="@color/black"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
