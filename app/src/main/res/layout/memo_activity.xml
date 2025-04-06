@@ -129,7 +129,6 @@
 
     <FrameLayout
         android:layout_width="409dp"
-        android:background="@drawable/radius"
         android:layout_height="103dp"
         tools:layout_editor_absoluteX="11dp"
         tools:layout_editor_absoluteY="195dp">
