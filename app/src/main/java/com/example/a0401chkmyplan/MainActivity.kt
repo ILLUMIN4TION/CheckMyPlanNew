@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.LinearLayout
 import com.example.a0401chkmyplan.R
 import com.example.a0401chkmyplan.databinding.ActivityMainBinding
 
@@ -16,6 +17,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        val todayBox1 = binding.todayBox1
+        val todayCheck1 = binding.todayCheck1
+        val todayList = binding.todayListLayout
+        val doneList = binding.doneListLayout
+
+
+        todayCheck1.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                todayList.removeView(todayBox1)
+                doneList.addView(todayBox1)
+            } else {
+                doneList.removeView(todayBox1)
+                todayList.addView(todayBox1, 0)
+            }
+        }
 
         val goDetailSet = binding.todayBox1
         goDetailSet.setOnClickListener{
