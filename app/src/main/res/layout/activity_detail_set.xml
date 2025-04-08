@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:background="@drawable/radius_down"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:elevation="5dp"
+        android:layout_marginBottom="10dp">
+
+
+        <!--상단 뒤로가기 아이콘-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_margin="10dp"
+                android:id="@+id/imgV1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_back_ios_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                app:tint="#000000" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <EditText
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:background="@null"
+                android:hint="여기에 텍스트를 입력하세요">
+
+
+            </EditText>
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@drawable/radius"
+        android:elevation="5dp"
+        android:layout_marginBottom="10dp">
+
+        <CalendarView
+            android:id="@+id/calView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="5dp">
+
+        <!--시간 선택 영역-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radius"
+            android:layout_marginBottom="10dp">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:backgroundTint="#DCDCDC" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:backgroundTint="#DCDCDC"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:layout_marginHorizontal="10dp"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:backgroundTint="#DCDCDC" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:backgroundTint="#DCDCDC" />
+        </LinearLayout>
+
+        <!--위치설정-->
+
+        <!--반복 설정-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/radius"
+            android:elevation="10dp"
+            android:orientation="vertical">
+            <!--위치설정-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/LocationDetailImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/location_on_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                        app:tint="#000000"/>
+
+                    <TextView
+                        android:paddingHorizontal="5dp"
+                        android:id="@+id/LocationDetailTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/LocationDetailImg"
+                        android:textStyle="bold"
+                        android:text="대림대학교(경기도 안양시 동안구 임곡로 29)" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/repeatDetailImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/repeat_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                        app:tint="#DCDCDC"/>
+
+                    <TextView
+                        android:paddingHorizontal="5dp"
+                        android:id="@+id/RepeatDetailTxt"
+                        android:textColor="#dcdcdc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/repeatDetailImg"
+                        android:textStyle="bold"
+                        android:text="반복 안함" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/photoDetailImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/repeat_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                        app:tint="#DCDCDC"/>
+
+                    <TextView
+                        android:paddingHorizontal="5dp"
+                        android:id="@+id/photoDetailTxt"
+                        android:textColor="#dcdcdc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/photoDetailImg"
+                        android:textStyle="bold"
+                        android:text="사진을 첨부하시려면 여기를 클릭하세요" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/alarmDetailImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/alarm_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                        app:tint="#DCDCDC"/>
+
+                    <TextView
+                        android:paddingHorizontal="5dp"
+                        android:id="@+id/alarmDetailTxt"
+                        android:textColor="#dcdcdc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/alarmDetailImg"
+                        android:textStyle="bold"
+                        android:text="알람을 설정하세요" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </RelativeLayout>
+        <!--반복 설정-->
+
+        <!--사진 설정-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </RelativeLayout>
+        <!--사진 설정-->
+
+        <!--알람 설정-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </RelativeLayout>
+        <!--알람 설정-->
+
+    </LinearLayout>
+    <!--시간 선택 영역-->
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
