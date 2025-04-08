@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/radius">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+            <ImageView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/close_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                app:tint="#000000"
+                android:layout_gravity="right"/>
+        </LinearLayout>
+
+        <EditText
+            android:layout_margin="10dp"
+            android:gravity="start"
+            android:id="@+id/main_bs_et"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:text="3월24일까지 과제제출, 반드시하기." />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/main_bs_timeSet"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/main_bs_timeImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/schedule_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                    app:tint="#000000" />
+
+                <TextView
+                    android:paddingHorizontal="5dp"
+                    android:id="@+id/main_bs_timeTV"
+                    android:textColor="#000000"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/main_bs_timeImg"
+                    android:textStyle="bold"
+                    android:text="오전 00시 ~ 오후 00시" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/main_bs_locSet"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/main_bs_LocImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/location_on_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                    app:tint="#000000"/>
+
+                <TextView
+                    android:paddingHorizontal="5dp"
+                    android:id="@+id/main_bs_LocTV"
+                    android:textColor="#000000"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/main_bs_LocImg"
+                    android:textStyle="bold"
+                    android:text="대림대학교 (경기도 안양시 동안구 임곡로 29)" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_bs_rptSet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/main_bs_rptImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/repeat_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                    app:tint="#DCDCDC"/>
+
+                <TextView
+                    android:paddingHorizontal="5dp"
+                    android:id="@+id/main_bs_rptTV"
+                    android:textColor="#dcdcdc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/main_bs_rptImg"
+                    android:textStyle="bold"
+                    android:text="반복 안함" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
