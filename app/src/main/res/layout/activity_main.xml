@@ -104,7 +104,10 @@
 
 
             </LinearLayout>
-
+            <!-- id이름을 todayListLayout으로 만들고
+                 기존 여러개 있던 todayBox를 1개남기고 다지움.
+                 todayBox에 체크박스에 채크를 하면 doneListLayout으로 채크된 상태로 이동 ->채크를 해제하면 다시 위로 이동함
+                 -->
             <LinearLayout
                 android:id="@+id/todayListLayout"
                 android:layout_width="match_parent"
@@ -153,6 +156,9 @@
                         android:text="03.20 오후 11시 59분"
                         android:textSize="10dp" />
                 </RelativeLayout>
+                <!-- todayBox밑에 +아이콘인 add_2_24.px.xml을 drawalbe에 새로가져와 삽입해 이미지버튼을 만듬. 모양이 이상해서 RelativeLayout에 넣은상태
+                    버튼을 누르면 todayBox가 생기는식으로 수정할 예정
+                 -->
                 <RelativeLayout
                     android:id="@+id/addList"
                     android:layout_width="330dp"
@@ -183,7 +189,7 @@
                 android:textSize="30dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="30dp"/>
-
+            <!--채크된 todayBox를 받기위해 layout id를 doneListLayout으로 만듬-->
             <LinearLayout
                 android:id="@+id/doneListLayout"
                 android:layout_width="match_parent"
