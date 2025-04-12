@@ -1,0 +1,128 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 제목 -->
+
+        <!-- 캘린더 뷰 -->
+
+        <!-- 시간 선택 -->
+
+        <CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="369dp"
+            android:layout_height="245dp" />
+
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:weightSum="2">
+
+            <!-- 시작 시간 -->
+
+            <!-- 종료 시간 -->
+
+            <TimePicker
+                android:id="@+id/startTimePicker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:is24HourView="false"
+                android:timePickerMode="spinner" />
+
+            <TimePicker
+                android:id="@+id/endTimePicker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:is24HourView="false"
+                android:timePickerMode="spinner" />
+        </LinearLayout>
+
+        <!-- AM/PM 토글 -->
+        <RadioGroup
+            android:id="@+id/ampmGroup"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/amRadio"
+                android:text="AM"
+                android:buttonTint="@color/purple_200"/>
+
+            <RadioButton
+                android:id="@+id/pmRadio"
+                android:text="PM"
+                android:buttonTint="@color/purple_200"/>
+        </RadioGroup>
+
+        <!-- 장소 -->
+
+        <!-- 반복 여부 (비활성화 표시용) -->
+
+        <!-- 사진 첨부 안내 -->
+
+        <LinearLayout
+            android:layout_width="361dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_location" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:srcCompat="@android:drawable/ic_dialog_map" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="대림대학교 (경기도 안양시 동안구 임곡로 29)" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="반복 안함"
+            android:textColor="#888888" />
+
+        <TextView
+            android:text="사진을 첨부하시려면 여기를 클릭하세요"
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!-- 알람 설정 -->
+
+        <TextView
+            android:id="@+id/textView3"
+            tools:layout_editor_absoluteX="65dp"
+            tools:layout_editor_absoluteY="378dp"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:text="🔔 알람을 설정하세요"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+</ScrollView>
