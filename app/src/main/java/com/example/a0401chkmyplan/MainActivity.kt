@@ -1,15 +1,13 @@
 package com.example.a0401chkmyplan
 
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.LinearLayout
+
 import androidx.activity.enableEdgeToEdge
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+
 import androidx.fragment.app.Fragment
-import com.example.a0401chkmyplan.R
+
 import com.example.a0401chkmyplan.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

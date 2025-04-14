@@ -8,15 +8,6 @@ import android.view.ViewGroup
 import com.example.a0401chkmyplan.databinding.FragmentTaskBinding
 
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [mainFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 
 class mainFragment : Fragment() {
     //프래그먼트에서 바인딩 사용을 위한 선언
