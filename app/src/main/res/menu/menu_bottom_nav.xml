@@ -2,19 +2,19 @@
 <!--    https://develop-oj.tistory.com/12-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/fragment_home"
+        android:id="@+id/fragment_memo"
         android:title="메모"
         android:icon="@drawable/note_alt_24px"/>
     <item
-        android:id="@+id/fragment_search"
+        android:id="@+id/fragment_task"
         android:title="할 일"
         android:icon="@drawable/checklist_24px"/>
     <item
-        android:id="@+id/fragment_favorite"
+        android:id="@+id/fragment_cal"
         android:title="캘린더"
         android:icon="@drawable/calendar_month_24px"/>
     <item
-        android:id="@+id/fragment_settings"
+        android:id="@+id/fragment_menu"
         android:title="메뉴"
         android:icon="@drawable/menu_24px"/>
 
