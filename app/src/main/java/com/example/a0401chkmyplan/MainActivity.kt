@@ -5,18 +5,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 import androidx.activity.enableEdgeToEdge
-
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 
 import com.example.a0401chkmyplan.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 
 
 class MainActivity : AppCompatActivity() {
 
     //바텀 네비게이션뷰 선언
     private lateinit var bottomNavigationView: BottomNavigationView
-
+    private lateinit var drawerLayout: DrawerLayout // ✅ DrawerLayout 선언
+    private lateinit var navigationView: NavigationView // ✅ NavigationView 선언
 
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
@@ -26,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        //DrawerLayout과 NavigationView 초기화
+        drawerLayout = binding.drawerLayout
+        navigationView = binding.navView
 
         //바텀 네비게이션 뷰를 xml의 네비게이션뷰로 초기화
         bottomNavigationView = binding.bottomNavView
@@ -44,7 +51,10 @@ class MainActivity : AppCompatActivity() {
             val selectedFragment: Fragment = when (item.itemId) {
                 R.id.fragment_memo -> memoFragment()
                 R.id.fragment_cal -> calFragment()
-                R.id.fragment_menu -> menuFragment()
+                R.id.fragment_menu -> {
+                    drawerLayout.openDrawer(GravityCompat.END)
+                    return@setOnItemSelectedListener true
+                }
 
                 else -> mainFragment()
             }
