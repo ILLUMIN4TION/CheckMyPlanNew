@@ -1,34 +1,44 @@
 package com.example.a0401chkmyplan
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.a0401chkmyplan.databinding.FragmentMemoBinding
 import com.example.a0401chkmyplan.databinding.MemoRvItemListBinding
 
-class MemoAdapter(val memoData: ArrayList<MemoDataClass>): RecyclerView.Adapter<MemoAdapter.Holder>() {
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): MemoAdapter.Holder {
-        val binding = MemoRvItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return Holder(binding)
+class MemoAdapter(
+    private val memoData: ArrayList<MemoDataClass>,
+    private val itemClickListener: onItemClickListener
+) : RecyclerView.Adapter<MemoAdapter.MemoViewHolder>() {
+
+    interface onItemClickListener {
+        fun onItemClick(memo: MemoDataClass)
     }
 
-    override fun onBindViewHolder(holder: MemoAdapter.Holder, position: Int) {
-        holder.month.text = memoData[position].month
-        holder.day.text =  memoData[position].day
-        holder.detail.text = memoData[position].innerText
+    inner class MemoViewHolder(val binding: MemoRvItemListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(memo: MemoDataClass) {
+            binding.rvMonthTV.text = memo.month
+            binding.rvDayTV.text = memo.day
+            binding.rvDetailTV.text = memo.innerText
+
+            binding.root.setOnClickListener {
+                Log.d("MemoAdapter", "아이템 클릭됨: ${memo.innerText}")
+                itemClickListener.onItemClick(memo)
+            }
+        }
     }
 
-    override fun getItemCount(): Int {
-        return memoData.size
-        //메모데이터의 사이즈만큼 화면에 몇 개가 출력되는지 결정
-    }
-    //어댑터로 가져올 데이터를 바인딩을 통해 전달, 뷰홀더로 사용하기 위해 뷰 홀더로 상속받고, 생성자로 binding.root
-    inner class Holder(val binding: MemoRvItemListBinding) : RecyclerView.ViewHolder(binding.root){
-        val day = binding.rvDayTV
-        val month = binding.rvMonthTV
-        val detail = binding.rvDetailTV
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoViewHolder {
+        val binding =
+            MemoRvItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MemoViewHolder(binding)
     }
 
+    override fun onBindViewHolder(holder: MemoViewHolder, position: Int) {
+        holder.bind(memoData[position])
+    }
+
+    override fun getItemCount(): Int = memoData.size
 }

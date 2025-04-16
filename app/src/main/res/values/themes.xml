@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme._0401ChkMyPlan" parent="Base.Theme._0401ChkMyPlan" />
+
+    <style name="TimePickerTheme.Digital" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:timePickerMode">spinner</item> <!-- 디지털(스크롤) 형식 -->
+    </style>
 </resources>

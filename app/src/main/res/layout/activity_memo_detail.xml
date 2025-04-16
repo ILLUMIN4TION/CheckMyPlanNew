@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d5d5d5">
+
+        <ImageView
+            android:id="@+id/selImgView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/image_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+            app:tint="#FFFFFF"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_memo_detail_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Month"
+            android:textSize="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/tv_memo_detail_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Day"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_memo_detail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textSize="30dp"
+        android:layout_weight="1"
+        android:text="sampleText"
+        android:gravity="start"
+        android:layout_margin="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/image_24dp_e3e3e3_fill0_wght400_grad0_opsz24"/>
+    </LinearLayout>
+
+</LinearLayout>

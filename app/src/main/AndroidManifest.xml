@@ -13,11 +13,18 @@
         android:theme="@style/Theme._0401ChkMyPlan"
         tools:targetApi="31">
         <activity
-            android:name=".ActivityDetailSet"
+            android:name=".LocationSetActivity"
             android:exported="false" />
         <activity
-            android:name=".activity_detail_set"
-            android:exported="false" />
+            android:name=".MemoDetailActivity"
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".activity_memo_detail" -->
+        <!-- android:exported="false" /> -->
+        <activity
+            android:name=".ActivityDetailSet"
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".activity_detail_set" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".CheckMyPlanSplash"
             android:exported="true">
