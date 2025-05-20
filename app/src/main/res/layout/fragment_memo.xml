@@ -22,18 +22,32 @@
         <Button
             android:layout_marginHorizontal="10dp"
             android:layout_width="wrap_content"
+            android:visibility="invisible"
             android:layout_height="wrap_content"
             android:text="장보기"/>
+
         <Button
-            android:layout_marginHorizontal="10dp"
+            android:id="@+id/memo_floatingBtn_add"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="일기"/>
+            android:text="메모 추가"
+            android:layout_height="50dp"
+            android:layout_marginLeft="60dp"
+            />
+
+        <Button
+            android:id="@+id/memo_floatingBtn_del"
+            android:layout_width="wrap_content"
+            android:text="메모 삭제"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            />
 
     </LinearLayout>
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <androidx.recyclerview.widget.RecyclerView
 
             android:id="@+id/memoRV"
@@ -49,5 +63,6 @@
 
 
 
-    </LinearLayout>
+
+    </FrameLayout>
 </LinearLayout>
