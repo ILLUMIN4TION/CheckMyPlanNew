@@ -10,20 +10,20 @@ import kotlin.jvm.java
 abstract class MemoDatabase : RoomDatabase() {
     abstract fun MemoDao(): MemoDao
 
-//    companion object {
-//        @Volatile
-//        private var INSTANCE: MemoDatabase? = null
-//
-//        fun getDatabase(context: Context): MemoDatabase {
-//            return INSTANCE ?: synchronized(this) {
-//                val instance = Room.databaseBuilder(
-//                    context.applicationContext,
-//                    MemoDatabase::class.java,
-//                    "schedule_database"
-//                ).build()
-//                INSTANCE = instance
-//                instance
-//            }
-//        }
-//    }
+    companion object {
+        @Volatile
+        private var INSTANCE: MemoDatabase? = null
+
+        fun getDatabase(context: Context): MemoDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    MemoDatabase::class.java,
+                    "memo_database"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
 }

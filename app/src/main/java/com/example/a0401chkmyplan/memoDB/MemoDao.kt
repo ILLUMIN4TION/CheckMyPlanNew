@@ -15,4 +15,7 @@ interface MemoDao {
 
     @Update
     suspend fun update(memo: MemoEntity)
+
+    @Query("SELECT * FROM memo_table WHERE title LIKE '%' || :query || '%' OR `desc` LIKE '%' || :query || '%'")
+    fun searchMemo(query: String): List<MemoEntity>
 }

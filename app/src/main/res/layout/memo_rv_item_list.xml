@@ -23,6 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textSize="20sp"/>
 
     </LinearLayout>
@@ -30,7 +32,7 @@
 
     <LinearLayout
         android:layout_marginTop="5dp"
-        android:layout_marginHorizontal="40dp"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#f9f9f9"
@@ -39,6 +41,8 @@
             android:id="@+id/rv_memo_desc"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:maxLines="5"
+            android:ellipsize="end"
             android:text="Desc"/>
     </LinearLayout>
 </LinearLayout>

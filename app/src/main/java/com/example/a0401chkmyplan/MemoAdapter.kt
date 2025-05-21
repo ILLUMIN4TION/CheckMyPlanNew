@@ -11,7 +11,7 @@ import com.example.a0401chkmyplan.memoDB.MemoEntity
 
 class MemoAdapter(
     private var memoList: MutableList<MemoEntity>,
-    private val onItemClick: (MemoEntity) -> Unit = {}  // 클릭 리스너 필요 없으면 생략 가능
+    private val onItemClick: (MemoEntity) -> Unit  // 클릭 리스너 필요 없으면 생략 가능
 ) : RecyclerView.Adapter<MemoAdapter.MemoViewHolder>() {
 
     private val selectedItems = mutableSetOf<MemoEntity>()
@@ -26,7 +26,8 @@ class MemoAdapter(
 
         init {
             itemView.setOnClickListener {
-                onItemClick(memoList[adapterPosition])
+                val memo = memoList[adapterPosition]
+                onItemClick(memo)  // 여기서 클릭 시 프래그먼트 쪽 콜백 호출
             }
         }
     }

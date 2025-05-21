@@ -23,32 +23,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_memo_detail_month"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/et_memo_title"
+            android:layout_width="1dp"
             android:layout_height="wrap_content"
-            android:text="Month"
-            android:textSize="20dp"
+            android:layout_weight="1"
+            android:text="제목"
+            android:textSize="25dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"/>
-        <TextView
-            android:id="@+id/tv_memo_detail_day"
+
+
+        <Button
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+
+            android:id="@+id/memodetail_btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Day"
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="5dp"/>
 
+            android:text="저장"/>
     </LinearLayout>
 
     <EditText
-        android:id="@+id/et_memo_detail"
+        android:id="@+id/et_memo_desc"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:textSize="30dp"
+        android:textSize="20dp"
         android:layout_weight="1"
-        android:text="sampleText"
+        android:text="Desc"
         android:gravity="start"
         android:layout_margin="10dp"/>
     <LinearLayout

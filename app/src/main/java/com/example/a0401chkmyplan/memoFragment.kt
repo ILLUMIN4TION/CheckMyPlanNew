@@ -1,5 +1,6 @@
 package com.example.a0401chkmyplan
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -35,6 +37,13 @@ class memoFragment : Fragment() {
     private lateinit var  recyclerView: RecyclerView
     private lateinit var  adapter: MemoAdapter
 
+    //update 관련 이슈를 방지하기 위한 코드
+    private val editMemoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            loadMemo() // 수정 후 리스트 새로고침
+        }
+    }
+
 
 
 
@@ -45,26 +54,27 @@ class memoFragment : Fragment() {
     ): View? {
         binding = FragmentMemoBinding.inflate(inflater, container, false)
 
+        // 룸 db빌더를 통해 변수에 사용할 데이터베이스를 db변수에 저장
         db = Room.databaseBuilder(
-            requireContext(), //프래그먼트에서 사용을 위해 requireCOntext()
-            MemoDatabase::class.java,
-            "memo_appDatabase"
+            requireContext(), //프래그먼트에서 사용을 위해 requireContext() 원래는 this
+            MemoDatabase::class.java, //우리가 참조할 데이터 베이스 파일 이걸 토대로 만듬
+            "memo_appDatabase" //우리가 사용할 db를 memo_appDatabase 이름으로 생성
         ).build()
-        dao = db.MemoDao()
+        dao = MemoDatabase.getDatabase(requireContext()).MemoDao() //싱글톤 dao객체 불러오기 -> 모든 프래그먼트, 액티비티에서 같은 dao를 사용하기 위함
 
-//        adapter = MemoAdapter(memoList) { selectedMemo ->
-//            val intent = Intent(requireContext(), EditMemoActivity::class.java).apply {
-//                putExtra("id", selectedMemo.id)
-//                putExtra("title", selectedMemo.title)
-//                putExtra("desc", selectedMemo.desc)
-//            }
-//            startActivity(intent)
-//        }
-//        recyclerView.adapter = adapter
+
 
 
         recyclerView = binding.memoRV
-        adapter = MemoAdapter(mutableListOf())
+        //우리가 만든 메모어댑터()사용, 클릭 이벤트 포함됨
+        adapter = MemoAdapter(mutableListOf()) { selectedMemo ->
+            val intent = Intent(requireContext(), MemoDetailActivity::class.java).apply {
+                putExtra("id", selectedMemo.id)
+                putExtra("title", selectedMemo.title)
+                putExtra("desc", selectedMemo.desc)
+            }
+            editMemoLauncher.launch(intent)  // 여기서 DetailActivity 실행
+        }
         binding.memoRV.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
