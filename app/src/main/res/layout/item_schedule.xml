@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+
+    android:id="@+id/todayBox1"
+    android:layout_width="330dp"
+    android:layout_height="70dp"
+    android:layout_gravity="center"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="15dp"
+    android:background="@drawable/radius"
+    android:backgroundTint="#f5f5f5"
+    android:gravity="center_vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <CheckBox
+        android:id="@+id/rv_task_chk1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </CheckBox>
+
+    <TextView
+        android:id="@+id/rv_task_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/rv_task_chk1"
+        android:layout_toRightOf="@+id/rv_task_chk1"
+        android:text="TestDesc"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/rv_task_dayNtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/rv_task_chk1"
+        android:layout_toRightOf="@+id/rv_task_chk1"
+        android:text="time and day"
+        android:textSize="10dp" />
+</RelativeLayout>

@@ -141,7 +141,7 @@
 
 
                     <CheckBox
-                        android:id="@+id/todayCheck1"
+                        android:id="@+id/rv_task_chk1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
@@ -151,8 +151,8 @@
                         android:id="@+id/todayTVMain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/todayCheck1"
-                        android:layout_toRightOf="@+id/todayCheck1"
+                        android:layout_alignBaseline="@+id/rv_task_chk1"
+                        android:layout_toRightOf="@+id/rv_task_chk1"
                         android:text="모바일앱 과제 제출하기"
                         android:textSize="20dp"
                         android:textStyle="bold" />
@@ -160,8 +160,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/todayCheck1"
-                        android:layout_toRightOf="@+id/todayCheck1"
+                        android:layout_alignBottom="@+id/rv_task_chk1"
+                        android:layout_toRightOf="@+id/rv_task_chk1"
                         android:text="03.20 오후 11시 59분"
                         android:textSize="10dp" />
                 </RelativeLayout>

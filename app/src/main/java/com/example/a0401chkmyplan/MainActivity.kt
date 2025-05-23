@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         //바텀 네비게이션 기본 설정, task(할일) 화면으로 설정
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, mainFragment())
+                .replace(R.id.fragment_container, TaskFragment())
                 .commit()
             bottomNavigationView.selectedItemId= R.id.fragment_task
         }
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
 
-                else -> mainFragment()
+                else -> TaskFragment()
             }
 
             supportFragmentManager.beginTransaction()
