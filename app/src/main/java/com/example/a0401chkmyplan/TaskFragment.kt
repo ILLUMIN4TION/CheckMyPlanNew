@@ -1,105 +1,168 @@
 package com.example.a0401chkmyplan
 
-
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.example.a0401chkmyplan.databinding.FragmentTaskBinding
 import com.example.a0401chkmyplan.scheduleDB.ScheduleDao
 import com.example.a0401chkmyplan.scheduleDB.ScheduleDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
+import com.example.a0401chkmyplan.scheduleDB.ScheduleEntity
+import kotlinx.coroutines.*
 
 class TaskFragment : Fragment() {
-    //프래그먼트에서 바인딩 사용을 위한 선언
 
     private lateinit var binding: FragmentTaskBinding
-    private lateinit var scheduleAdapter: ScheduleAdapter
     private lateinit var dao: ScheduleDao
+    private lateinit var db: ScheduleDatabase
+
+    private lateinit var incompleteAdapter: ScheduleAdapter
+    private lateinit var completeAdapter: ScheduleAdapter
+
+    private val editScheduleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            loadSchedules()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        //바인딩 초기화
+    ): View {
         binding = FragmentTaskBinding.inflate(inflater, container, false)
+
+        db = Room.databaseBuilder(
+            requireContext(),
+            ScheduleDatabase::class.java,
+            "schedule_appDatabase"
+        ).build()
+
         dao = ScheduleDatabase.getDatabase(requireContext()).scheduleDao()
+
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        scheduleAdapter = ScheduleAdapter()
-        binding.taskRv.layoutManager = LinearLayoutManager(requireContext())
-        binding.taskRv.adapter = scheduleAdapter
+        // 어댑터 2개 초기화
+        incompleteAdapter = ScheduleAdapter(mutableListOf(),
+            onItemClick = { schedule ->
+                // 아이템 클릭 시 동작 (예: 상세 화면 이동)
+                val bottomSheet = BottomSheet()
+                bottomSheet.arguments = Bundle().apply {
+                    putInt("id", schedule.id)
+                    putLong("timeMillis", schedule.timeMillis)
+                    putString("desc", schedule.desc)
+                }
+                bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+            },
+            onCheckChanged = { schedule ->
+                // 체크박스 클릭 시 isComplete 변경 및 DB 업데이트 후 새로고침
+                CoroutineScope(Dispatchers.IO).launch {
+                    dao.update(schedule.copy(isComplete = !schedule.isComplete))
+                    loadSchedules()
+                }
+            },
+            onDeleteClick = { schedule ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    dao.delete(schedule)
+                    loadSchedules()
+                }
+            }
+        )
 
-        loadSchedules()
+        completeAdapter = ScheduleAdapter(mutableListOf(),
+            onItemClick = { schedule ->
+                // 아이템 클릭 시 동작 (예: 상세 화면 이동)
+                val bottomSheet = BottomSheet()
+                bottomSheet.arguments = Bundle().apply {
+                    putInt("id", schedule.id)
+                    putLong("timeMillis", schedule.timeMillis)
+                    putString("desc", schedule.desc)
+                }
+                bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+            },
+            onCheckChanged = { schedule ->
+                // 체크박스 클릭 시 isComplete 변경 및 DB 업데이트 후 새로고침
+                CoroutineScope(Dispatchers.IO).launch {
+                    dao.update(schedule.copy(isComplete = !schedule.isComplete))
+                    loadSchedules()
+                }
+            },
+            onDeleteClick = { schedule ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    dao.delete(schedule)
+                    loadSchedules()
+                }
+            }
+        )
 
+        // RecyclerView 각각 연결
+        binding.taskRv.apply {
+            adapter = incompleteAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        binding.rvTaskDone.apply {
+            adapter = completeAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        // 일정 추가 버튼
         binding.taskBtnAdd.setOnClickListener {
             val simpleSet = BottomSheet()
             simpleSet.show(parentFragmentManager, simpleSet.tag)
-
         }
 
 
-//        // todayBox1: 첫 번째 할 일 박스의 뷰를 변수에 저장
-//        val todayBox1 = binding.todayBox1
-//
-//
-//        // todayCheck1: 해당 박스 안에 있는 체크박스 뷰를 변수에 저장
-//        val todayCheck1 = binding.rvTaskChk1
-//
-//        // todayList: '오늘 할 일' 리스트(LinearLayout)를 변수에 저장
-//        val todayList = binding.todayListLayout
-//
-//        val goSimpleSet = binding.todayBox1
-//
-//        // doneList: '완료된 일' 리스트(LinearLayout)를 변수에 저장
-//        val doneList = binding.doneListLayout
-//
-//        val addBtn = binding.addListButton
+        parentFragmentManager.setFragmentResultListener("schedule_added", viewLifecycleOwner) { _, _ ->
+            loadSchedules()
+        }
 
+        loadSchedules()
 
-
-
-
-        // 체크박스의 체크 상태가 바뀔 때 실행되는 리스너 등록
-//        todayCheck1.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                // 체크되면(todayBox1을) '오늘 할 일' 리스트에서 제거하고,
-//                // '완료된 일' 리스트에 추가
-//                todayList.removeView(todayBox1)
-//                doneList.addView(todayBox1)
-//            } else {
-//                // 체크 해제되면(todayBox1을) '완료된 일' 리스트에서 제거하고,
-//                // '오늘 할 일' 리스트 맨 위에 다시 추가
-//                doneList.removeView(todayBox1)
-//                todayList.addView(todayBox1, 0)  // 0: 리스트 제일 위에 추가
-//            }
-//        }
-
-//        goSimpleSet.setOnClickListener{
-//            val simpleSet = BottomSheet()
-//            simpleSet.show(parentFragmentManager, simpleSet.tag)
-//        }
+        parentFragmentManager.setFragmentResultListener("schedule_updated", viewLifecycleOwner) { _, _ ->
+            loadSchedules()
+        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        loadSchedules()
+    }
+
+    // 체크 상태 변경 로직
+    private fun toggleComplete(schedule: ScheduleEntity) {
+        val updated = schedule.copy(isComplete = !schedule.isComplete)
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.update(updated)
+            loadSchedules()
+        }
+    }
+
     private fun loadSchedules() {
         CoroutineScope(Dispatchers.IO).launch {
-            val scheduleList = dao.getAllSchedules()
+            val incomplete = dao.getIncompleteSchedules()
+            val complete = dao.getCompleteSchedules()
+
             withContext(Dispatchers.Main) {
-                scheduleAdapter.submitList(scheduleList)
+                incompleteAdapter.submitList(incomplete)
+                completeAdapter.submitList(complete)
             }
+        }
+    }
+
+    private fun deleteSchedule(schedule: ScheduleEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.delete(schedule)
+            loadSchedules()  // 삭제 후 리스트 다시 불러오기
         }
     }
 }
