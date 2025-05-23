@@ -68,15 +68,5 @@ class mainFragment : Fragment() {
             val simpleSet = BottomSheet()
             simpleSet.show(parentFragmentManager, simpleSet.tag)
         }
-
-
-
-
-
-
-
-
-
-
     }
 }
