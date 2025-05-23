@@ -1,4 +1,4 @@
-#2025-05-23 commit
+# 2025-05-23 commit
 
 ## RoomDB + RecyclerView를 사용한 메모 및 일정 기능(CRUD) 구현 완료'
 
