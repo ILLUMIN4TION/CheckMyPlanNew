@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
 
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/todayBox1"
     android:layout_width="330dp"
     android:layout_height="70dp"
     android:layout_gravity="center"
-    android:layout_marginTop="15dp"
-    android:layout_marginBottom="15dp"
+    android:layout_margin="10dp"
     android:background="@drawable/radius"
     android:backgroundTint="#f5f5f5"
     android:gravity="center_vertical"
@@ -16,9 +16,11 @@
     <CheckBox
         android:id="@+id/rv_task_chk1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="true" />
 
-    </CheckBox>
 
     <TextView
         android:id="@+id/rv_task_main"
@@ -38,4 +40,13 @@
         android:layout_toRightOf="@+id/rv_task_chk1"
         android:text="time and day"
         android:textSize="10dp" />
+
+    <ImageView
+        android:id="@+id/rv_task_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:layout_alignParentRight="true"
+        app:tint="@android:color/holo_red_light" />
 </RelativeLayout>

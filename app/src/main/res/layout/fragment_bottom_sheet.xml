@@ -42,7 +42,8 @@
             android:id="@+id/main_bs_et"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:text="3월24일까지 과제제출, 반드시하기." />
+            android:text=""
+            android:hint="일정 입력"/>
     </LinearLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
