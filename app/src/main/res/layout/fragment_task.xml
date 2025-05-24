@@ -77,7 +77,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -94,22 +94,18 @@
                     android:textSize="30dp" />
 
                 <Button
+
                     android:id="@+id/task_btn_add"
+                    android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+
                     android:text="일정 추가"
-                    android:textSize="12dp" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="주간 할 일"
-                    android:textSize="12dp" />
+                     />
 
 
-            </LinearLayout>
+
+            </RelativeLayout>
             <!-- id이름을 todayListLayout으로 만들고
                  기존 여러개 있던 todayBox를 1개남기고 다지움.
                  todayBox에 체크박스에 채크를 하면 doneListLayout으로 채크된 상태로 이동 ->채크를 해제하면 다시 위로 이동함
@@ -117,7 +113,7 @@
             <LinearLayout
                 android:id="@+id/todayListLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="4"
 
                 android:layout_marginLeft="20dp"
@@ -131,39 +127,63 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/task_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="5dp"/>
+
+                <FrameLayout
+                    android:id="@+id/fragment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="완료된 일"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="30dp"/>
+            <RelativeLayout
+                android:layout_marginHorizontal="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="완료된 일"
+                    android:textStyle="bold"
+                    android:textSize="30dp" />
+
+                <Button
+                    android:id="@+id/task_btn_del"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="일정 삭제"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+
+
+            </RelativeLayout>
+
             <!--채크된 todayBox를 받기위해 layout id를 doneListLayout으로 만듬-->
             <LinearLayout
                 android:layout_weight="4"
                 android:id="@+id/doneListLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/radius"
-                android:orientation="vertical"/>
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_taskDone"
+                    android:layout_marginVertical="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav_view"

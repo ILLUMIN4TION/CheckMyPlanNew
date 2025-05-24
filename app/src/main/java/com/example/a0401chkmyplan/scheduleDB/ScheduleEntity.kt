@@ -6,5 +6,6 @@ import androidx.room.*
 data class ScheduleEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val desc: String,
-    val timeMillis: Long // 날짜 및 시간을 저장 (millis 기준)
+    val timeMillis: Long, // 날짜 및 시간을 저장 (millis 기준)
+    val isComplete: Boolean = false //일정이 완료되었는 지 확인 기본 false
 )

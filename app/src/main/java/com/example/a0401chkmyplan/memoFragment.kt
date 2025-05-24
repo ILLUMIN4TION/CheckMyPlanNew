@@ -44,9 +44,6 @@ class memoFragment : Fragment() {
         }
     }
 
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,6 +65,7 @@ class memoFragment : Fragment() {
         recyclerView = binding.memoRV
         //우리가 만든 메모어댑터()사용, 클릭 이벤트 포함됨
         adapter = MemoAdapter(mutableListOf()) { selectedMemo ->
+
             val intent = Intent(requireContext(), MemoDetailActivity::class.java).apply {
                 putExtra("id", selectedMemo.id)
                 putExtra("title", selectedMemo.title)
@@ -138,6 +136,8 @@ class memoFragment : Fragment() {
         loadMemo()
 
     }
+
+
     private fun loadMemo() {
         CoroutineScope(Dispatchers.IO).launch {
             val memoList = dao.getAllMemo()

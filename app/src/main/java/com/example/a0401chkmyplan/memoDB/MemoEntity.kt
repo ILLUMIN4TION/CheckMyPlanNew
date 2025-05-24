@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class MemoEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,  // 자동 증가 ID
     val title: String,   // 일정 제목
-    val desc: String     // 일정 내용
+    val desc: String,     // 일정 내용
+
 )
