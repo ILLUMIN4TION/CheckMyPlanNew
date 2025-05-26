@@ -24,8 +24,11 @@
 
     <TextView
         android:id="@+id/rv_task_main"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="50dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:layout_alignBaseline="@+id/rv_task_chk1"
         android:layout_toRightOf="@+id/rv_task_chk1"
         android:text="TestDesc"

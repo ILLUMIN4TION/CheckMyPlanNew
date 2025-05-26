@@ -118,15 +118,16 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
+                android:id="@+id/bs_timeLayout"
                 android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/main_bs_rptImg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/repeat_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:src="@android:drawable/ic_lock_idle_alarm"
                     app:tint="#DCDCDC"/>
 
                 <TextView
@@ -137,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/main_bs_rptImg"
                     android:textStyle="bold"
-                    android:text="반복 안함" />
+                    android:text="알람 설정" />
             </RelativeLayout>
 
         </LinearLayout>

@@ -24,4 +24,11 @@ interface ScheduleDao {
 
     @Query("SELECT * FROM schedule_table WHERE isComplete = 1 ORDER BY timeMillis ASC")
     fun getCompleteSchedules(): MutableList<ScheduleEntity>
+
+    //캘린더뷰에서 선택한 날짜 및, 선택한 날짜의 일정 가져오기
+    @Query("SELECT * FROM schedule_table WHERE date(timeMillis / 1000, 'unixepoch') = date(:millis / 1000, 'unixepoch')")
+    suspend fun getSchedulesByDate(millis: Long): List<ScheduleEntity>
+
+    @Query("SELECT * FROM schedule_table WHERE timeMillis BETWEEN :startOfDay AND :endOfDay ORDER BY timeMillis ASC")
+    suspend fun getSchedulesByDateRange(startOfDay: Long, endOfDay: Long): List<ScheduleEntity>
 }
