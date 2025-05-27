@@ -29,12 +29,14 @@ class TaskFragment : Fragment() {
         if (it.resultCode == Activity.RESULT_OK) {
             loadSchedules()
         }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View {
         binding = FragmentTaskBinding.inflate(inflater, container, false)
 
@@ -51,6 +53,8 @@ class TaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
 
         // ✅ 현재 날짜 + 요일 (예: 22목)
         val calendar = Calendar.getInstance()
@@ -144,6 +148,7 @@ class TaskFragment : Fragment() {
             val simpleSet = BottomSheet()
             simpleSet.show(parentFragmentManager, simpleSet.tag)
         }
+
 
 
         parentFragmentManager.setFragmentResultListener("schedule_added", viewLifecycleOwner) { _, _ ->
