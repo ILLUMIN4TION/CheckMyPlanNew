@@ -14,6 +14,7 @@ import com.example.a0401chkmyplan.scheduleDB.ScheduleDao
 import com.example.a0401chkmyplan.scheduleDB.ScheduleDatabase
 import com.example.a0401chkmyplan.scheduleDB.ScheduleEntity
 import kotlinx.coroutines.*
+import java.util.*
 
 class TaskFragment : Fragment() {
 
@@ -50,6 +51,29 @@ class TaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // ✅ 현재 날짜 + 요일 (예: 22목)
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val dayOfWeek = when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> "일"
+            Calendar.MONDAY -> "월"
+            Calendar.TUESDAY -> "화"
+            Calendar.WEDNESDAY -> "수"
+            Calendar.THURSDAY -> "목"
+            Calendar.FRIDAY -> "금"
+            Calendar.SATURDAY -> "토"
+            else -> ""
+        }
+        val dateText = "$day$dayOfWeek"
+        binding.WeekandDate.text = dateText
+
+        // ✅ 현재 연도 + 월 (예: 2025.05)
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val yearMonthText = String.format("%d.%02d", year, month)
+        binding.Yearmanth.text = yearMonthText
+
 
         // 어댑터 2개 초기화
         incompleteAdapter = ScheduleAdapter(mutableListOf(),
