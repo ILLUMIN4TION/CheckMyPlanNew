@@ -132,7 +132,7 @@
 
                 <TextView
                     android:paddingHorizontal="5dp"
-                    android:id="@+id/main_bs_rptTV"
+                    android:id="@+id/main_bs_alarmTV"
                     android:textColor="#dcdcdc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

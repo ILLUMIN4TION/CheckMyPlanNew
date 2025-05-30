@@ -7,7 +7,7 @@ import androidx.room.*
 @Dao
 interface ScheduleDao {
     @Insert
-    suspend fun insert(schedule: ScheduleEntity)
+    suspend fun insert(schedule: ScheduleEntity): Long
 
     @Update
     suspend fun update(schedule: ScheduleEntity)

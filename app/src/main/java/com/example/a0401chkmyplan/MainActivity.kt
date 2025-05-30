@@ -1,10 +1,20 @@
     package com.example.a0401chkmyplan
 
 
+    import android.content.pm.PackageManager
+    import android.os.Build
     import androidx.appcompat.app.AppCompatActivity
     import android.os.Bundle
+    import android.Manifest
+    import android.app.AlarmManager
+    import android.app.AlertDialog
+    import android.content.Context
+    import android.content.Intent
+    import android.provider.Settings
 
     import androidx.activity.enableEdgeToEdge
+    import androidx.core.app.ActivityCompat
+    import androidx.core.content.ContextCompat
     import androidx.core.view.GravityCompat
     import androidx.drawerlayout.widget.DrawerLayout
     import androidx.fragment.app.Fragment
@@ -18,8 +28,8 @@
 
         //바텀 네비게이션뷰 선언
         private lateinit var bottomNavigationView: BottomNavigationView
-        private lateinit var drawerLayout: DrawerLayout // ✅ DrawerLayout 선언
-        private lateinit var navigationView: NavigationView // ✅ NavigationView 선언
+        private lateinit var drawerLayout: DrawerLayout //
+        private lateinit var navigationView: NavigationView //
 
         private val binding: ActivityMainBinding by lazy {
             ActivityMainBinding.inflate(layoutInflater)
@@ -27,6 +37,24 @@
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                if (!alarmManager.canScheduleExactAlarms()) {
+                    // 사용자에게 알림 설정 허용 요청 다이얼로그
+                    AlertDialog.Builder(this)
+                        .setTitle("정확한 알람 권한 필요")
+                        .setMessage("정확한 일정 알림을 위해 설정에서 허용해 주세요.")
+                        .setPositiveButton("설정으로 이동") { _, _ ->
+                            val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                            startActivity(intent)
+                        }
+                        .setNegativeButton("나중에", null)
+                        .show()
+                }
+            }
+
+
             enableEdgeToEdge()
             setContentView(binding.root)
 
@@ -75,6 +103,21 @@
                     .commit()
 
                 true
+            }
+            requestNotificationPermission()
+
+        }
+        private fun requestNotificationPermission() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                        1001
+                    )
+                }
             }
         }
 

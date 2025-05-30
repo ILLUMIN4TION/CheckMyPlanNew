@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import com.example.a0401chkmyplan.databinding.FragmentBottomSheetBinding
+import com.example.a0401chkmyplan.notification.scheduleAlarm
 import com.example.a0401chkmyplan.scheduleDB.ScheduleDatabase
 import com.example.a0401chkmyplan.scheduleDB.ScheduleEntity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -36,6 +37,10 @@ class BottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var selectedAlertType: String
     private var selectedMinutesBefore = 0
+
+    //알람 타입과, 알람 시간을 저장할 변수들
+    private var alarmType: String = "status"      // 💡 기본값
+    private var alarmMinutesBefore: Int = 30
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,28 +101,34 @@ class BottomSheet : BottomSheetDialogFragment() {
 
         binding.bsImgOk.setOnClickListener {
             val desc = binding.mainBsEt.text.toString().trim()
-
             if (desc.isNotBlank()) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val dao = ScheduleDatabase.getDatabase(requireContext()).scheduleDao()
 
                     if (scheduleId != null) {
-                        // 수정 모드: 업데이트
-                        val updatedSchedule = ScheduleEntity(
+                        val updated = ScheduleEntity(
                             id = scheduleId!!,
                             desc = desc,
                             timeMillis = selectedTimeMillis,
-                            isComplete = false // 필요하면 전달받거나 수정 가능
+                            isComplete = false
                         )
-                        dao.update(updatedSchedule)
+                        dao.update(updated)
+
+                        // 💡 알람 설정
+                        scheduleAlarm(requireContext(), updated, alarmType, alarmMinutesBefore)
+
                     } else {
-                        // 새로 작성 모드: 삽입
                         val newSchedule = ScheduleEntity(
                             desc = desc,
                             timeMillis = selectedTimeMillis,
                             isComplete = false
                         )
-                        dao.insert(newSchedule)
+                        val newId = dao.insert(newSchedule)
+
+                        val full = newSchedule.copy(id = newId.toInt())
+
+                        // 💡 알람 설정
+                        scheduleAlarm(requireContext(), full, alarmType, alarmMinutesBefore)
                     }
 
                     withContext(Dispatchers.Main) {
@@ -172,13 +183,12 @@ class BottomSheet : BottomSheetDialogFragment() {
                     R.id.rb_status -> "status"
                     R.id.rb_popup -> "popup"
                     R.id.rb_fullscreen -> "fullscreen"
-                    else -> "status" // 기본값
+                    else -> "status"
                 }
-
                 val minutesBefore = etMinutesBefore.text.toString().toIntOrNull() ?: 30
-
-                // 값 저장 또는 전달
-                saveAlarmSettings(selectedType, minutesBefore)
+                alarmType = selectedType                       // 💡 저장
+                alarmMinutesBefore = minutesBefore            // 💡 저장
+                binding.mainBsAlarmTV.text = "${minutesBefore}분 전, 유형: $selectedType"
             }
             .setNegativeButton("취소", null)
             .show()
@@ -190,4 +200,33 @@ class BottomSheet : BottomSheetDialogFragment() {
         selectedAlertType = alertType
         selectedMinutesBefore = minutesBefore
     }
+
+    private fun showAlarmSettingDialog() {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.alarm_setting_dialog, null)
+        val radioGroup = dialogView.findViewById<RadioGroup>(R.id.radioGroupType)
+        val minutesEdit = dialogView.findViewById<EditText>(R.id.editMinutesBefore)
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("알림 설정")
+            .setView(dialogView)
+            .setPositiveButton("확인") { _, _ ->
+                val type = when (radioGroup.checkedRadioButtonId) {
+                    R.id.radioStatus -> "status"
+                    R.id.radioPopup -> "popup"
+                    R.id.radioFullscreen -> "fullscreen"
+                    else -> "status"
+                }
+                val minutes = minutesEdit.text.toString().toIntOrNull() ?: 30
+
+                // 알림 정보 저장
+                alarmType = type
+                alarmMinutesBefore = minutes
+
+                // 바텀시트 UI 반영
+                binding.mainBsAlarmTV.text = "${minutes}분 전, 유형: $type"
+            }
+            .setNegativeButton("취소", null)
+            .show()
+    }
+
 }
