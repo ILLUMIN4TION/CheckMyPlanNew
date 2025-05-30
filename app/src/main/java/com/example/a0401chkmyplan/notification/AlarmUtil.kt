@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.example.a0401chkmyplan.alarm.AlarmReceiver
+import com.example.a0401chkmyplan.notification.AlarmReceiver
 import com.example.a0401chkmyplan.scheduleDB.ScheduleEntity
 import java.util.Date
 

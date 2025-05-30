@@ -10,6 +10,8 @@
     import android.app.AlertDialog
     import android.content.Context
     import android.content.Intent
+    import android.net.Uri
+    import android.os.PowerManager
     import android.provider.Settings
 
     import androidx.activity.enableEdgeToEdge
@@ -37,6 +39,8 @@
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
+
+            checkBatteryOptimization()
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -104,19 +108,72 @@
 
                 true
             }
-            requestNotificationPermission()
+//            requestNotificationPermission()
+            checkNotificationPermission()
 
         }
-        private fun requestNotificationPermission() {
+//        private fun requestNotificationPermission() {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+//                    != PackageManager.PERMISSION_GRANTED
+//                ) {
+//                    ActivityCompat.requestPermissions(
+//                        this,
+//                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+//                        1001
+//                    )
+//                }
+//            }
+//        }
+
+        private fun checkBatteryOptimization() {
+            val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+            val packageName = packageName
+
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                // 배터리 최적화 예외 요청을 위한 인텐트
+                val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                intent.data = Uri.parse("package:$packageName")
+                startActivity(intent)
+            }
+        }
+
+        private fun checkNotificationPermission() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED
-                ) {
-                    ActivityCompat.requestPermissions(
+                if (ContextCompat.checkSelfPermission(
                         this,
-                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                        1001
-                    )
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // ▶ 권한 요청
+                    requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1001)
+                }
+            }
+        }
+
+        // ▶ 권한 요청 결과 처리 함수 추가
+        override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+        ) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            if (requestCode == 1001) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 권한 승인됨
+                    // (필요하면 추가 행동 가능)
+                } else {
+                    // 권한 거부됨, 사용자에게 안내 및 설정 이동 유도
+                    AlertDialog.Builder(this)
+                        .setTitle("알림 권한 필요")
+                        .setMessage("알림을 받으려면 권한이 필요합니다. 설정에서 권한을 허용해 주세요.")
+                        .setPositiveButton("설정으로 이동") { _, _ ->
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                            intent.data = Uri.parse("package:$packageName")
+                            startActivity(intent)
+                        }
+                        .setNegativeButton("취소", null)
+                        .show()
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.example.a0401chkmyplan.alarm
+package com.example.a0401chkmyplan.notification
 
 import android.content.BroadcastReceiver
 import android.content.Context
