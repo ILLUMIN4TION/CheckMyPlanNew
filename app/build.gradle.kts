@@ -45,6 +45,7 @@ android {
         kapt ("androidx.room:room-compiler:2.7.1")
         implementation ("androidx.room:room-ktx:2.7.1")
 
+        implementation ("com.google.android.gms:play-services-maps:18.2.0")
 
         //Navigation draw를 사용하기위함
         implementation ("com.google.android.material:material:1.9.0")

@@ -41,11 +41,28 @@
 
 
     </LinearLayout>
-
-    <ImageView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/location_test"/>
+        android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/map_fragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/Loc_cur_longtitude_latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="위치: , 경도: "
+            android:background="#FFFFFF"
+
+            android:alpha=".5"/>
+
+
+    </FrameLayout>
+
+
 
 
 

@@ -19,29 +19,26 @@ class ScheduleAdapter(
 ) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
     inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val scheduleDescTextView: TextView = itemView.findViewById(R.id.rv_task_main)
-        val scheduleTimeTextView: TextView = itemView.findViewById(R.id.rv_task_dayNtime)
-        val scheduleCheckBox: CheckBox = itemView.findViewById(R.id.rv_task_chk1)
-        val scheduleDelete: ImageView = itemView.findViewById(R.id.rv_task_delete)
+        val desc: TextView = itemView.findViewById(R.id.rv_task_main)
+        val time: TextView = itemView.findViewById(R.id.rv_task_dayNtime)
+        val checkBox: CheckBox = itemView.findViewById(R.id.rv_task_chk1)
+        val deleteBtn: ImageView = itemView.findViewById(R.id.rv_task_delete)
 
         init {
-            // ✅ 전체 항목 클릭: 체크박스/삭제 버튼 아닌 경우만 반응
-            itemView.setOnClickListener { v ->
+            itemView.setOnClickListener {
                 val task = taskList[adapterPosition]
-
-                // 클릭한 뷰가 체크박스나 삭제 버튼이면 무시
-                if (v.id != R.id.rv_task_chk1 && v.id != R.id.rv_task_delete) {
+                if (it.id != R.id.rv_task_chk1 && it.id != R.id.rv_task_delete) {
                     onItemClick(task)
                 }
             }
 
-            scheduleDelete.setOnClickListener {
+            deleteBtn.setOnClickListener {
                 val task = taskList[adapterPosition]
                 onDeleteClick(task)
             }
 
-            scheduleCheckBox.setOnClickListener {
-                it?.parent?.requestDisallowInterceptTouchEvent(true) // 부모 클릭 막기
+            checkBox.setOnClickListener {
+                it.parent?.requestDisallowInterceptTouchEvent(true)
                 val task = taskList[adapterPosition]
                 onCheckChanged(task)
             }
@@ -55,14 +52,10 @@ class ScheduleAdapter(
 
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
         val task = taskList[position]
-
-        holder.scheduleDescTextView.text = task.desc
-        holder.scheduleTimeTextView.text = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-            .format(task.timeMillis)
-
-        holder.scheduleCheckBox.setOnCheckedChangeListener(null)
-        holder.scheduleCheckBox.isChecked = task.isComplete
-        // → 실제 동작은 ViewHolder init에서 설정한 setOnClickListener가 처리
+        holder.desc.text = task.desc
+        holder.time.text = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(task.timeMillis)
+        holder.checkBox.setOnCheckedChangeListener(null)
+        holder.checkBox.isChecked = task.isComplete
     }
 
     override fun getItemCount(): Int = taskList.size

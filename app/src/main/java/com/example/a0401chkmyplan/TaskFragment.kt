@@ -1,9 +1,8 @@
+// TaskFragment.kt
 package com.example.a0401chkmyplan
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -22,147 +21,54 @@ class TaskFragment : Fragment() {
     private lateinit var binding: FragmentTaskBinding
     private lateinit var dao: ScheduleDao
     private lateinit var db: ScheduleDatabase
-    private lateinit var notiHelper: NotificationHelper
 
     private lateinit var incompleteAdapter: ScheduleAdapter
     private lateinit var completeAdapter: ScheduleAdapter
 
-    private val editScheduleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            loadSchedules()
-        }
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentTaskBinding.inflate(inflater, container, false)
-
-        db = Room.databaseBuilder(
-            requireContext(),
-            ScheduleDatabase::class.java,
-            "schedule_appDatabase"
-        ).build()
-
+        db = Room.databaseBuilder(requireContext(), ScheduleDatabase::class.java, "schedule_appDatabase").build()
         dao = ScheduleDatabase.getDatabase(requireContext()).scheduleDao()
-
-        notiHelper = NotificationHelper
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-        // ✅ 현재 날짜 + 요일 (예: 22목)
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val dayOfWeek = when (calendar.get(Calendar.DAY_OF_WEEK)) {
-            Calendar.SUNDAY -> "일"
-            Calendar.MONDAY -> "월"
-            Calendar.TUESDAY -> "화"
-            Calendar.WEDNESDAY -> "수"
-            Calendar.THURSDAY -> "목"
-            Calendar.FRIDAY -> "금"
-            Calendar.SATURDAY -> "토"
-            else -> ""
-        }
-        val dateText = "$day$dayOfWeek"
-        binding.WeekandDate.text = dateText
+        val dayOfWeek = listOf("일", "월", "화", "수", "목", "금", "토")[calendar.get(Calendar.DAY_OF_WEEK) - 1]
+        binding.WeekandDate.text = "$day$dayOfWeek"
+        binding.Yearmanth.text = String.format("%d.%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1)
 
-        // ✅ 현재 연도 + 월 (예: 2025.05)
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH) + 1
-        val yearMonthText = String.format("%d.%02d", year, month)
-        binding.Yearmanth.text = yearMonthText
-
-
-        // 어댑터 2개 초기화
-        incompleteAdapter = ScheduleAdapter(mutableListOf(),
-            onItemClick = { schedule ->
-                // 아이템 클릭 시 동작 (예: 상세 화면 이동)
-                val bottomSheet = BottomSheet()
-                bottomSheet.arguments = Bundle().apply {
-                    putInt("id", schedule.id)
-                    putLong("timeMillis", schedule.timeMillis)
-                    putString("desc", schedule.desc)
-                }
-                bottomSheet.show(parentFragmentManager, bottomSheet.tag)
-            },
-            onCheckChanged = { schedule ->
-                // 체크박스 클릭 시 isComplete 변경 및 DB 업데이트 후 새로고침
-                CoroutineScope(Dispatchers.IO).launch {
-                    dao.update(schedule.copy(isComplete = !schedule.isComplete))
-                    loadSchedules()
-                }
-            },
-            onDeleteClick = { schedule ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    deleteSchedule(schedule)
-
-                }
-            }
+        incompleteAdapter = ScheduleAdapter(
+            mutableListOf(),
+            onItemClick = { schedule -> openBottomSheet(schedule) },
+            onCheckChanged = { schedule -> updateScheduleCheck(schedule) },
+            onDeleteClick = { schedule -> deleteSchedule(schedule) }
         )
 
-        completeAdapter = ScheduleAdapter(mutableListOf(),
-            onItemClick = { schedule ->
-                // 아이템 클릭 시 동작 (예: 상세 화면 이동)
-                val bottomSheet = BottomSheet()
-                bottomSheet.arguments = Bundle().apply {
-                    putInt("id", schedule.id)
-                    putLong("timeMillis", schedule.timeMillis)
-                    putString("desc", schedule.desc)
-                }
-                bottomSheet.show(parentFragmentManager, bottomSheet.tag)
-            },
-            onCheckChanged = { schedule ->
-                // 체크박스 클릭 시 isComplete 변경 및 DB 업데이트 후 새로고침
-                CoroutineScope(Dispatchers.IO).launch {
-                    dao.update(schedule.copy(isComplete = !schedule.isComplete))
-                    loadSchedules()
-                }
-            },
-            onDeleteClick = { schedule ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    deleteSchedule(schedule)
-                }
-            }
+        completeAdapter = ScheduleAdapter(
+            mutableListOf(),
+            onItemClick = { schedule -> openBottomSheet(schedule) },
+            onCheckChanged = { schedule -> updateScheduleCheck(schedule) },
+            onDeleteClick = { schedule -> deleteSchedule(schedule) }
         )
 
-        // RecyclerView 각각 연결
-        binding.taskRv.apply {
-            adapter = incompleteAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
+        binding.taskRv.adapter = incompleteAdapter
+        binding.taskRv.layoutManager = LinearLayoutManager(requireContext())
 
-        binding.rvTaskDone.apply {
-            adapter = completeAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
+        binding.rvTaskDone.adapter = completeAdapter
+        binding.rvTaskDone.layoutManager = LinearLayoutManager(requireContext())
 
-        // 일정 추가 버튼
         binding.taskBtnAdd.setOnClickListener {
-            val simpleSet = BottomSheet()
-            simpleSet.show(parentFragmentManager, simpleSet.tag)
+            BottomSheet().show(parentFragmentManager, "AddSchedule")
         }
 
-
-
-        parentFragmentManager.setFragmentResultListener("schedule_added", viewLifecycleOwner) { _, _ ->
-            loadSchedules()
-        }
+        parentFragmentManager.setFragmentResultListener("schedule_added", viewLifecycleOwner) { _, _ -> loadSchedules() }
+        parentFragmentManager.setFragmentResultListener("schedule_updated", viewLifecycleOwner) { _, _ -> loadSchedules() }
 
         loadSchedules()
-
-        parentFragmentManager.setFragmentResultListener("schedule_updated", viewLifecycleOwner) { _, _ ->
-            loadSchedules()
-        }
     }
 
     override fun onResume() {
@@ -170,12 +76,45 @@ class TaskFragment : Fragment() {
         loadSchedules()
     }
 
-    // 체크 상태 변경 로직
-    private fun toggleComplete(schedule: ScheduleEntity) {
+    private fun openBottomSheet(schedule: ScheduleEntity) {
+        val bottomSheet = BottomSheet().apply {
+            arguments = Bundle().apply {
+                putInt("id", schedule.id)
+                putLong("timeMillis", schedule.timeMillis)
+                putString("desc", schedule.desc)
+                putString("alarmType", schedule.alarmType)
+                putInt("alarmOffsetMinutes", schedule.alarmOffsetMinutes)
+                putDouble("latitude", schedule.latitude ?: Double.NaN)        // ✅ 이 두 줄이 중요
+                putDouble("longitude", schedule.longitude ?: Double.NaN)
+            }
+        }
+        bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+    }
+
+    private fun updateScheduleCheck(schedule: ScheduleEntity) {
         val updated = schedule.copy(isComplete = !schedule.isComplete)
         CoroutineScope(Dispatchers.IO).launch {
             dao.update(updated)
-            loadSchedules()
+
+            withContext(Dispatchers.Main) {
+                if (updated.isComplete) {
+                    NotificationHelper.cancelAlarm(requireContext(), updated.id.toLong())
+                } else {
+                    // 알람 재등록하려면 저장된 알람 데이터(시간, 타입 등)를 가져와야 함
+                    // 필요 시 DB에 해당 정보 추가 필요
+                }
+                loadSchedules()
+            }
+        }
+    }
+
+    private fun deleteSchedule(schedule: ScheduleEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.delete(schedule)
+            withContext(Dispatchers.Main) {
+                NotificationHelper.cancelAlarm(requireContext(), schedule.id.toLong())
+                loadSchedules()
+            }
         }
     }
 
@@ -188,17 +127,6 @@ class TaskFragment : Fragment() {
                 incompleteAdapter.submitList(incomplete)
                 completeAdapter.submitList(complete)
             }
-        }
-    }
-
-    private fun deleteSchedule(schedule: ScheduleEntity) {
-        CoroutineScope(Dispatchers.IO).launch {
-            // ✅ 알림 취소 추가
-            notiHelper.cancelAlarm(requireContext() ,schedule.id.toLong())
-            notiHelper.cancelAlarm(requireContext(), schedule.id.toLong() * 1000) // n분 전 알림도
-
-            dao.delete(schedule)  // ✅ DB에서 삭제
-            loadSchedules()
         }
     }
 }

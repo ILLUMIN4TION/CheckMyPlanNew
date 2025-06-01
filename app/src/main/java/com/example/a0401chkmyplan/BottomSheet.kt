@@ -1,8 +1,11 @@
 package com.example.a0401chkmyplan
 
+import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +14,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat
+import com.example.a0401chkmyplan.databinding.ActivityLocationSetBinding
 import com.example.a0401chkmyplan.databinding.FragmentBottomSheetBinding
 import com.example.a0401chkmyplan.notification.scheduleAlarm
 import com.example.a0401chkmyplan.scheduleDB.ScheduleDatabase
@@ -20,48 +25,59 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
+import kotlin.collections.isNotEmpty
 
 
 class BottomSheet : BottomSheetDialogFragment() {
-
     private var _binding: FragmentBottomSheetBinding? = null
     private val binding get() = _binding!!
 
-    // 수정 시 기존 데이터 id 저장 (null이면 새로 작성)
     private var scheduleId: Int? = null
-    private var selectedTimeMillis: Long = 0L  // var로 변경, 기본값 0
-
+    private var selectedTimeMillis: Long = 0L
     private val calendar = Calendar.getInstance()
 
     private lateinit var selectedAlertType: String
     private var selectedMinutesBefore = 0
 
-    //알람 타입과, 알람 시간을 저장할 변수들
-    private var alarmType: String = "status"      // 💡 기본값
+    // ✅ 알람 관련 값 기본값 설정
+    private var alarmType: String = "status"
     private var alarmMinutesBefore: Int = 30
 
+    private val LOCATION_REQUEST_CODE = 1001
+    private var selectedLatitude: Double? = null
+    private var selectedLongitude: Double? = null
+    private var savedLatitude: Double? = null
+    private var savedLongitude: Double? = null
+
+    // ✅ 수정 시 기존 데이터 저장
+    private var savedDesc: String? = null
+    private var savedTimeMillis: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             scheduleId = it.getInt("id", -1).takeIf { id -> id != -1 }
             if (scheduleId != null) {
-                // 기존 데이터가 있으면 desc, timeMillis도 받아오기
-                val desc = it.getString("desc") ?: ""
-                val timeMillis = it.getLong("timeMillis", 0L)
-                selectedTimeMillis = timeMillis
+                savedDesc = it.getString("desc")
+                savedTimeMillis = it.getLong("timeMillis", 0L)
+                selectedTimeMillis = savedTimeMillis!!
 
-                // onViewCreated에서 UI 초기화용으로 저장해두기
-                savedDesc = desc
-                savedTimeMillis = timeMillis
+                savedLatitude = it.getDouble("latitude", Double.NaN).takeIf { !it.isNaN() }
+                savedLongitude = it.getDouble("longitude", Double.NaN).takeIf { !it.isNaN() }
+
+                // ✅ 알람 정보도 arguments에서 받아오기
+                alarmType = it.getString("alarmType") ?: "status"
+                alarmMinutesBefore = it.getInt("alarmMinutesBefore", 30)
             }
+            alarmType = it.getString("alarmType", "status")  // 기본값 status
+            alarmMinutesBefore = it.getInt("alarmOffsetMinutes", 30)
         }
-    }
 
-    private var savedDesc: String? = null
-    private var savedTimeMillis: Long? = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +85,8 @@ class BottomSheet : BottomSheetDialogFragment() {
     ): View {
         _binding = FragmentBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
+
+
     }
 
     override fun onDestroyView() {
@@ -79,17 +97,27 @@ class BottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-        // 수정 모드면 기존 데이터 UI에 세팅
+        // ✅ 기존 데이터 UI에 반영
         if (scheduleId != null) {
             binding.mainBsEt.setText(savedDesc ?: "")
             if (savedTimeMillis != null && savedTimeMillis != 0L) {
-                val dateStr = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-                    .format(java.util.Date(savedTimeMillis!!))
+                val dateStr = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                    .format(Date(savedTimeMillis!!))
                 binding.mainBsTimeTV.text = dateStr
             }
+
+            if (savedLatitude != null && savedLongitude != null) {
+                val addressStr = getAddressFromLocation(savedLatitude!!, savedLongitude!!)
+                binding.mainBsLocTV.text = "위치: $addressStr"
+                selectedLatitude = savedLatitude
+                selectedLongitude = savedLongitude
+            }
+
+            // ✅ 알림 텍스트뷰에도 기존 값 반영
+            binding.mainBsAlarmTV.text = "${alarmMinutesBefore}분 전, 유형: $alarmType"
+
         }
+
 
         binding.bsTimeLayout.setOnClickListener {
             showAlarmSettingsDialog()
@@ -97,6 +125,11 @@ class BottomSheet : BottomSheetDialogFragment() {
 
         binding.mainBsTimeSet.setOnClickListener {
             showDateTimePicker()
+        }
+
+        binding.mainBsLocSet.setOnClickListener {
+            val intent = Intent(requireContext(), LocationSetActivity::class.java)
+            startActivityForResult(intent, LOCATION_REQUEST_CODE)
         }
 
         binding.bsImgOk.setOnClickListener {
@@ -110,24 +143,27 @@ class BottomSheet : BottomSheetDialogFragment() {
                             id = scheduleId!!,
                             desc = desc,
                             timeMillis = selectedTimeMillis,
-                            isComplete = false
+                            isComplete = false,
+                            latitude = selectedLatitude,
+                            longitude = selectedLongitude,
+                            alarmType = alarmType,                          // ✅ 알림 정보 포함
+                            alarmOffsetMinutes = alarmMinutesBefore
+
                         )
                         dao.update(updated)
-
-                        // 💡 알람 설정
                         scheduleAlarm(requireContext(), updated, alarmType, alarmMinutesBefore)
-
                     } else {
                         val newSchedule = ScheduleEntity(
                             desc = desc,
                             timeMillis = selectedTimeMillis,
-                            isComplete = false
+                            isComplete = false,
+                            latitude = selectedLatitude,
+                            longitude = selectedLongitude,
+                            alarmType = alarmType,                          // ✅ 알림 정보 포함
+                            alarmOffsetMinutes = alarmMinutesBefore
                         )
                         val newId = dao.insert(newSchedule)
-
                         val full = newSchedule.copy(id = newId.toInt())
-
-                        // 💡 알람 설정
                         scheduleAlarm(requireContext(), full, alarmType, alarmMinutesBefore)
                     }
 
@@ -155,21 +191,14 @@ class BottomSheet : BottomSheetDialogFragment() {
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 calendar.set(Calendar.MINUTE, minute)
 
-                // ✅ 선택된 시간 저장!
                 selectedTimeMillis = calendar.timeInMillis
-
-                val selectedTime = calendar.time
-                Log.d("BottomSheet", "선택된 시간 저장: $selectedTime ($selectedTimeMillis)")
-
-                binding.mainBsTimeTV.text = selectedTime.toString()
+                binding.mainBsTimeTV.text = calendar.time.toString()
 
             }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true).show()
 
         }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)).show()
     }
 
-
-    //알람 설정을 위한 다이얼로그 세팅
     private fun showAlarmSettingsDialog() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_alarm_settings, null)
         val alertTypeGroup = dialogView.findViewById<RadioGroup>(R.id.alertTypeGroup)
@@ -186,47 +215,40 @@ class BottomSheet : BottomSheetDialogFragment() {
                     else -> "status"
                 }
                 val minutesBefore = etMinutesBefore.text.toString().toIntOrNull() ?: 30
-                alarmType = selectedType                       // 💡 저장
-                alarmMinutesBefore = minutesBefore            // 💡 저장
+                alarmType = selectedType
+                alarmMinutesBefore = minutesBefore
                 binding.mainBsAlarmTV.text = "${minutesBefore}분 전, 유형: $selectedType"
             }
             .setNegativeButton("취소", null)
             .show()
     }
 
-    private fun saveAlarmSettings(alertType: String, minutesBefore: Int) {
-        // 나중에 일정 저장 시 ScheduleEntity 또는 알림 예약에 함께 사용
-        Log.d("AlarmSettings", "🔔 알림 타입: $alertType, $minutesBefore 분 전")
-        selectedAlertType = alertType
-        selectedMinutesBefore = minutesBefore
-    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK) {
+            selectedLatitude = data?.getDoubleExtra("latitude", 0.0)
+            selectedLongitude = data?.getDoubleExtra("longitude", 0.0)
 
-    private fun showAlarmSettingDialog() {
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.alarm_setting_dialog, null)
-        val radioGroup = dialogView.findViewById<RadioGroup>(R.id.radioGroupType)
-        val minutesEdit = dialogView.findViewById<EditText>(R.id.editMinutesBefore)
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("알림 설정")
-            .setView(dialogView)
-            .setPositiveButton("확인") { _, _ ->
-                val type = when (radioGroup.checkedRadioButtonId) {
-                    R.id.radioStatus -> "status"
-                    R.id.radioPopup -> "popup"
-                    R.id.radioFullscreen -> "fullscreen"
-                    else -> "status"
-                }
-                val minutes = minutesEdit.text.toString().toIntOrNull() ?: 30
-
-                // 알림 정보 저장
-                alarmType = type
-                alarmMinutesBefore = minutes
-
-                // 바텀시트 UI 반영
-                binding.mainBsAlarmTV.text = "${minutes}분 전, 유형: $type"
+            if (selectedLatitude != null && selectedLongitude != null) {
+                val addressStr = getAddressFromLocation(selectedLatitude!!, selectedLongitude!!)
+                binding.mainBsLocTV.text = "위치: $addressStr"
             }
-            .setNegativeButton("취소", null)
-            .show()
+        }
     }
 
+    private fun getAddressFromLocation(latitude: Double, longitude: Double): String {
+        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+        return try {
+            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            if (addresses != null && addresses.isNotEmpty()) {
+                val address = addresses[0]
+                address.getAddressLine(0) ?: "주소 정보 없음"
+            } else {
+                "주소를 찾을 수 없음"
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "주소 변환 실패"
+        }
+    }
 }
