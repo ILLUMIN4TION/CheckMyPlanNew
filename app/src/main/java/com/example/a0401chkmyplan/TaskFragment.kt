@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.a0401chkmyplan.databinding.FragmentTaskBinding
+import com.example.a0401chkmyplan.notification.NotificationHelper
 import com.example.a0401chkmyplan.scheduleDB.ScheduleDao
 import com.example.a0401chkmyplan.scheduleDB.ScheduleDatabase
 import com.example.a0401chkmyplan.scheduleDB.ScheduleEntity
@@ -21,6 +22,7 @@ class TaskFragment : Fragment() {
     private lateinit var binding: FragmentTaskBinding
     private lateinit var dao: ScheduleDao
     private lateinit var db: ScheduleDatabase
+    private lateinit var notiHelper: NotificationHelper
 
     private lateinit var incompleteAdapter: ScheduleAdapter
     private lateinit var completeAdapter: ScheduleAdapter
@@ -47,6 +49,8 @@ class TaskFragment : Fragment() {
         ).build()
 
         dao = ScheduleDatabase.getDatabase(requireContext()).scheduleDao()
+
+        notiHelper = NotificationHelper
 
         return binding.root
     }
@@ -100,8 +104,8 @@ class TaskFragment : Fragment() {
             },
             onDeleteClick = { schedule ->
                 CoroutineScope(Dispatchers.IO).launch {
-                    dao.delete(schedule)
-                    loadSchedules()
+                    deleteSchedule(schedule)
+
                 }
             }
         )
@@ -126,8 +130,7 @@ class TaskFragment : Fragment() {
             },
             onDeleteClick = { schedule ->
                 CoroutineScope(Dispatchers.IO).launch {
-                    dao.delete(schedule)
-                    loadSchedules()
+                    deleteSchedule(schedule)
                 }
             }
         )
@@ -190,8 +193,12 @@ class TaskFragment : Fragment() {
 
     private fun deleteSchedule(schedule: ScheduleEntity) {
         CoroutineScope(Dispatchers.IO).launch {
-            dao.delete(schedule)
-            loadSchedules()  // 삭제 후 리스트 다시 불러오기
+            // ✅ 알림 취소 추가
+            notiHelper.cancelAlarm(requireContext() ,schedule.id.toLong())
+            notiHelper.cancelAlarm(requireContext(), schedule.id.toLong() * 1000) // n분 전 알림도
+
+            dao.delete(schedule)  // ✅ DB에서 삭제
+            loadSchedules()
         }
     }
 }
