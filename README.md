@@ -1,13 +1,13 @@
-#2025-05-21 commit
+#2025-05-30 push
 
-## RoomDB + RecyclerView를 사용한 메모 프래그먼트 + 메모 디테일 액티비티 구현
+## 메모, 일정, 캘린더 기능 구현 및 일정에서 알림을 추가하고 기기에 표시할 수 있게끔 수정
 
 
-## Room DB(Memo) 내부 구조, 
-### MemoEntity(엔티티 , 테이블정의)
-### MemoDao (Dao, 엔티티에 대한 CRUD 정의)
+## 알림과 관련된 파일은 notification 패키지에 있습니다
+### AlarmReceiver (알림으로 어떤 내용이 들어가야하는지 함수로 정의
+### AlarmScheduler (기존의 알람이 존재하는지 PendingIntent를 통해 확인 및 알람 예약 시 현재 시간보다 이전일 경우 방지)
 ### MemoDatabase (코드에서 우리가 사용할 실제 데이터베이스, 싱글톤으로 구현하여 모든 액티비티(프래그먼트)에서 일관된 Dao 사용
-### MyApplication (데이터베이스 업데이트시, 자동으로 버전 업그레이드를 위함)
+### NotificationHelper (알림과 관련된 다양한 메서드들을 모아둔 파일 ex, status에 따른 분기점으로 스테이터스, 팝업, 전체화면 설정 , 채널 설정)
 
 
 
