@@ -13,5 +13,6 @@ data class ScheduleEntity(
     val latitude: Double? = null,
     val longitude: Double? = null,
     val alarmType: String = "status",             // ✅ 추가
-    val alarmOffsetMinutes: Int = 30
+    val alarmOffsetMinutes: Int = 30,
+//    val useDday: Boolean = false
 )

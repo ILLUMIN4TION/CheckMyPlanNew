@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
@@ -12,10 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat
-import com.example.a0401chkmyplan.databinding.ActivityLocationSetBinding
 import com.example.a0401chkmyplan.databinding.FragmentBottomSheetBinding
 import com.example.a0401chkmyplan.notification.scheduleAlarm
 import com.example.a0401chkmyplan.scheduleDB.ScheduleDatabase
@@ -29,8 +29,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import kotlin.collections.isNotEmpty
-
 
 class BottomSheet : BottomSheetDialogFragment() {
     private var _binding: FragmentBottomSheetBinding? = null
@@ -43,7 +41,6 @@ class BottomSheet : BottomSheetDialogFragment() {
     private lateinit var selectedAlertType: String
     private var selectedMinutesBefore = 0
 
-    // ✅ 알람 관련 값 기본값 설정
     private var alarmType: String = "status"
     private var alarmMinutesBefore: Int = 30
 
@@ -53,9 +50,10 @@ class BottomSheet : BottomSheetDialogFragment() {
     private var savedLatitude: Double? = null
     private var savedLongitude: Double? = null
 
-    // ✅ 수정 시 기존 데이터 저장
     private var savedDesc: String? = null
     private var savedTimeMillis: Long? = null
+
+    var schedule: ScheduleEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,24 +67,20 @@ class BottomSheet : BottomSheetDialogFragment() {
                 savedLatitude = it.getDouble("latitude", Double.NaN).takeIf { !it.isNaN() }
                 savedLongitude = it.getDouble("longitude", Double.NaN).takeIf { !it.isNaN() }
 
-                // ✅ 알람 정보도 arguments에서 받아오기
                 alarmType = it.getString("alarmType") ?: "status"
                 alarmMinutesBefore = it.getInt("alarmMinutesBefore", 30)
             }
-            alarmType = it.getString("alarmType", "status")  // 기본값 status
+            alarmType = it.getString("alarmType", "status")
             alarmMinutesBefore = it.getInt("alarmOffsetMinutes", 30)
         }
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
-
-
     }
 
     override fun onDestroyView() {
@@ -97,11 +91,11 @@ class BottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ✅ 기존 데이터 UI에 반영
         if (scheduleId != null) {
             binding.mainBsEt.setText(savedDesc ?: "")
             if (savedTimeMillis != null && savedTimeMillis != 0L) {
-                val dateStr = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                // ✅ 대한민국식 포맷으로 기존 시간 표시
+                val dateStr = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분", Locale.KOREA)
                     .format(Date(savedTimeMillis!!))
                 binding.mainBsTimeTV.text = dateStr
             }
@@ -113,11 +107,8 @@ class BottomSheet : BottomSheetDialogFragment() {
                 selectedLongitude = savedLongitude
             }
 
-            // ✅ 알림 텍스트뷰에도 기존 값 반영
             binding.mainBsAlarmTV.text = "${alarmMinutesBefore}분 전, 유형: $alarmType"
-
         }
-
 
         binding.bsTimeLayout.setOnClickListener {
             showAlarmSettingsDialog()
@@ -128,55 +119,21 @@ class BottomSheet : BottomSheetDialogFragment() {
         }
 
         binding.mainBsLocSet.setOnClickListener {
+            val progressBar = binding.progressBar
+            progressBar.visibility = View.VISIBLE
             val intent = Intent(requireContext(), LocationSetActivity::class.java)
             startActivityForResult(intent, LOCATION_REQUEST_CODE)
         }
 
         binding.bsImgOk.setOnClickListener {
-            val desc = binding.mainBsEt.text.toString().trim()
-            if (desc.isNotBlank()) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val dao = ScheduleDatabase.getDatabase(requireContext()).scheduleDao()
-
-                    if (scheduleId != null) {
-                        val updated = ScheduleEntity(
-                            id = scheduleId!!,
-                            desc = desc,
-                            timeMillis = selectedTimeMillis,
-                            isComplete = false,
-                            latitude = selectedLatitude,
-                            longitude = selectedLongitude,
-                            alarmType = alarmType,                          // ✅ 알림 정보 포함
-                            alarmOffsetMinutes = alarmMinutesBefore
-
-                        )
-                        dao.update(updated)
-                        scheduleAlarm(requireContext(), updated, alarmType, alarmMinutesBefore)
-                    } else {
-                        val newSchedule = ScheduleEntity(
-                            desc = desc,
-                            timeMillis = selectedTimeMillis,
-                            isComplete = false,
-                            latitude = selectedLatitude,
-                            longitude = selectedLongitude,
-                            alarmType = alarmType,                          // ✅ 알림 정보 포함
-                            alarmOffsetMinutes = alarmMinutesBefore
-                        )
-                        val newId = dao.insert(newSchedule)
-                        val full = newSchedule.copy(id = newId.toInt())
-                        scheduleAlarm(requireContext(), full, alarmType, alarmMinutesBefore)
-                    }
-
-                    withContext(Dispatchers.Main) {
-                        val resultKey = if (scheduleId != null) "schedule_updated" else "schedule_added"
-                        parentFragmentManager.setFragmentResult(resultKey, Bundle())
-                        dismiss()
-                    }
-                }
-            } else {
-                Toast.makeText(requireContext(), "내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
-            }
+            saveEvent()
         }
+
+        binding.bsImgCancel.setOnClickListener {
+            dismiss()
+        }
+
+
     }
 
     private fun showDateTimePicker() {
@@ -192,7 +149,11 @@ class BottomSheet : BottomSheetDialogFragment() {
                 calendar.set(Calendar.MINUTE, minute)
 
                 selectedTimeMillis = calendar.timeInMillis
-                binding.mainBsTimeTV.text = calendar.time.toString()
+
+                // ✅ 대한민국식 포맷으로 시간 표시
+                val formatted = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분", Locale.KOREA)
+                    .format(calendar.time)
+                binding.mainBsTimeTV.text = formatted
 
             }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true).show()
 
@@ -224,6 +185,7 @@ class BottomSheet : BottomSheetDialogFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val progressBar = binding.progressBar
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK) {
             selectedLatitude = data?.getDoubleExtra("latitude", 0.0)
@@ -232,6 +194,7 @@ class BottomSheet : BottomSheetDialogFragment() {
             if (selectedLatitude != null && selectedLongitude != null) {
                 val addressStr = getAddressFromLocation(selectedLatitude!!, selectedLongitude!!)
                 binding.mainBsLocTV.text = "위치: $addressStr"
+                progressBar.visibility = View.GONE
             }
         }
     }
@@ -251,4 +214,83 @@ class BottomSheet : BottomSheetDialogFragment() {
             "주소 변환 실패"
         }
     }
+
+    private fun saveEvent() {
+        val desc = binding.mainBsEt.text.toString().trim()
+        if (desc.isNotBlank()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val dao = ScheduleDatabase.getDatabase(requireContext()).scheduleDao()
+
+                if (scheduleId != null) {
+                    val updated = ScheduleEntity(
+                        id = scheduleId!!,
+                        desc = desc,
+                        timeMillis = selectedTimeMillis,
+                        isComplete = false,
+                        latitude = selectedLatitude,
+                        longitude = selectedLongitude,
+                        alarmType = alarmType,
+                        alarmOffsetMinutes = alarmMinutesBefore
+                    )
+                    dao.update(updated)
+                    scheduleAlarm(requireContext(), updated, alarmType, alarmMinutesBefore)
+                } else {
+                    val newSchedule = ScheduleEntity(
+                        desc = desc,
+                        timeMillis = selectedTimeMillis,
+                        isComplete = false,
+                        latitude = selectedLatitude,
+                        longitude = selectedLongitude,
+                        alarmType = alarmType,
+                        alarmOffsetMinutes = alarmMinutesBefore
+                    )
+                    val newId = dao.insert(newSchedule)
+                    val full = newSchedule.copy(id = newId.toInt())
+                    scheduleAlarm(requireContext(), full, alarmType, alarmMinutesBefore)
+                }
+
+                withContext(Dispatchers.Main) {
+                    if (isAdded) {
+                        val resultKey = if (scheduleId != null) "schedule_updated" else "schedule_added"
+                        parentFragmentManager.setFragmentResult(resultKey, Bundle())
+                        onScheduleSavedListener?.onScheduleSaved()
+                        dismiss()
+                    }
+                }
+            }
+        } else {
+            Toast.makeText(requireContext(), "내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    companion object {
+        fun newInstance(dateMillis: Long): BottomSheet {
+            val fragment = BottomSheet()
+            val args = Bundle()
+            args.putLong("dateMillis", dateMillis)
+            fragment.arguments = args
+            return fragment
+        }
+        fun newInstance(schedule: ScheduleEntity): BottomSheet {
+            val fragment = BottomSheet()
+            val args = Bundle().apply {
+                putInt("id", schedule.id)
+                putString("desc", schedule.desc)
+                putLong("timeMillis", schedule.timeMillis)
+                putBoolean("isComplete", schedule.isComplete)
+//                putBoolean("useDday", schedule.useDday)
+                // 필요한 필드 계속 추가
+            }
+            fragment.arguments = args
+            return fragment
+        }
+    }
+    interface OnScheduleSavedListener {
+        fun onScheduleSaved()
+    }
+    var onScheduleSavedListener: OnScheduleSavedListener? = null
+
+
 }
+
+
