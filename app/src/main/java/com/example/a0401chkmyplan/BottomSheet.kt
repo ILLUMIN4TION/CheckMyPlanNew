@@ -264,22 +264,16 @@ class BottomSheet : BottomSheetDialogFragment() {
     }
 
     companion object {
-        fun newInstance(dateMillis: Long): BottomSheet {
-            val fragment = BottomSheet()
-            val args = Bundle()
-            args.putLong("dateMillis", dateMillis)
-            fragment.arguments = args
-            return fragment
-        }
         fun newInstance(schedule: ScheduleEntity): BottomSheet {
             val fragment = BottomSheet()
             val args = Bundle().apply {
                 putInt("id", schedule.id)
                 putString("desc", schedule.desc)
                 putLong("timeMillis", schedule.timeMillis)
-                putBoolean("isComplete", schedule.isComplete)
-//                putBoolean("useDday", schedule.useDday)
-                // 필요한 필드 계속 추가
+                schedule.latitude?.let { putDouble("latitude", it) }
+                schedule.longitude?.let { putDouble("longitude", it) }
+                schedule.alarmType?.let { putString("alarmType", it) }
+                putInt("alarmMinutesBefore", schedule.alarmOffsetMinutes)
             }
             fragment.arguments = args
             return fragment
