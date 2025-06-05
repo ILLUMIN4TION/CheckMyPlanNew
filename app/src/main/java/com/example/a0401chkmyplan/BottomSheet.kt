@@ -38,12 +38,14 @@ class BottomSheet : BottomSheetDialogFragment() {
     private var selectedTimeMillis: Long = 0L
     private val calendar = Calendar.getInstance()
 
-    private lateinit var selectedAlertType: String
-    private var selectedMinutesBefore = 0
 
+    // 알림 관련
+    //알림이 다이얼로그를 통해 변경됐을 때만 예약되게 설정
+    private var isAlarmConfigure = false
     private var alarmType: String = "status"
     private var alarmMinutesBefore: Int = 30
 
+    //위치 관련
     private val LOCATION_REQUEST_CODE = 1001
     private var selectedLatitude: Double? = null
     private var selectedLongitude: Double? = null
@@ -53,7 +55,8 @@ class BottomSheet : BottomSheetDialogFragment() {
     private var savedDesc: String? = null
     private var savedTimeMillis: Long? = null
 
-    var schedule: ScheduleEntity? = null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,6 +179,7 @@ class BottomSheet : BottomSheetDialogFragment() {
                     else -> "status"
                 }
                 val minutesBefore = etMinutesBefore.text.toString().toIntOrNull() ?: 30
+                this.isAlarmConfigure = true
                 alarmType = selectedType
                 alarmMinutesBefore = minutesBefore
                 binding.mainBsAlarmTV.text = "${minutesBefore}분 전, 유형: $selectedType"
@@ -221,11 +225,18 @@ class BottomSheet : BottomSheetDialogFragment() {
             CoroutineScope(Dispatchers.IO).launch {
                 val dao = ScheduleDatabase.getDatabase(requireContext()).scheduleDao()
 
+                // 사용자가 선택한 시간 or 기본값 설정
+                val finalTimeMillis = if(selectedTimeMillis > 0L ){
+                    selectedTimeMillis
+                }else{
+                    System.currentTimeMillis()
+                }
+
                 if (scheduleId != null) {
                     val updated = ScheduleEntity(
                         id = scheduleId!!,
                         desc = desc,
-                        timeMillis = selectedTimeMillis,
+                        timeMillis = finalTimeMillis,
                         isComplete = false,
                         latitude = selectedLatitude,
                         longitude = selectedLongitude,
@@ -233,11 +244,14 @@ class BottomSheet : BottomSheetDialogFragment() {
                         alarmOffsetMinutes = alarmMinutesBefore
                     )
                     dao.update(updated)
-                    scheduleAlarm(requireContext(), updated, alarmType, alarmMinutesBefore)
+                    if(isAlarmConfigure && alarmMinutesBefore != null && alarmType != null){
+                        scheduleAlarm(requireContext(), updated, alarmType, alarmMinutesBefore)
+                    }
+
                 } else {
                     val newSchedule = ScheduleEntity(
                         desc = desc,
-                        timeMillis = selectedTimeMillis,
+                        timeMillis = finalTimeMillis,
                         isComplete = false,
                         latitude = selectedLatitude,
                         longitude = selectedLongitude,
@@ -246,7 +260,9 @@ class BottomSheet : BottomSheetDialogFragment() {
                     )
                     val newId = dao.insert(newSchedule)
                     val full = newSchedule.copy(id = newId.toInt())
-                    scheduleAlarm(requireContext(), full, alarmType, alarmMinutesBefore)
+                    if(isAlarmConfigure && alarmMinutesBefore != null && alarmType != null){
+                        scheduleAlarm(requireContext(), newSchedule, alarmType, alarmMinutesBefore)
+                    }
                 }
 
                 withContext(Dispatchers.Main) {
