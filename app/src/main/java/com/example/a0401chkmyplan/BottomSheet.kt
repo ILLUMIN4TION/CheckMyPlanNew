@@ -122,9 +122,16 @@ class BottomSheet : BottomSheetDialogFragment() {
         }
 
         binding.mainBsLocSet.setOnClickListener {
-            val progressBar = binding.progressBar
-            progressBar.visibility = View.VISIBLE
-            val intent = Intent(requireContext(), LocationSetActivity::class.java)
+            val intent = Intent(context, LocationSetActivity::class.java)
+
+            // 저장된 위치가 있을 경우에만 인텐트에 담아 전달
+            if (selectedLatitude != null && selectedLongitude != null &&
+                selectedLatitude != 0.0 && selectedLongitude != 0.0
+            ) {
+                intent.putExtra("latitude", selectedLatitude)
+                intent.putExtra("longitude", selectedLongitude)
+            }
+
             startActivityForResult(intent, LOCATION_REQUEST_CODE)
         }
 
@@ -188,28 +195,37 @@ class BottomSheet : BottomSheetDialogFragment() {
             .show()
     }
 
+    // 지도 위치 선택 후 돌아올 때
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val progressBar = binding.progressBar
         super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK) {
+            val progressBar = binding.progressBar
+
             selectedLatitude = data?.getDoubleExtra("latitude", 0.0)
             selectedLongitude = data?.getDoubleExtra("longitude", 0.0)
 
-            if (selectedLatitude != null && selectedLongitude != null) {
+            if (selectedLatitude != null && selectedLongitude != null &&
+                selectedLatitude != 0.0 && selectedLongitude != 0.0) {
+
+                // 주소 받아오기
                 val addressStr = getAddressFromLocation(selectedLatitude!!, selectedLongitude!!)
                 binding.mainBsLocTV.text = "위치: $addressStr"
-                progressBar.visibility = View.GONE
+            } else {
+                binding.mainBsLocTV.text = "위치 정보 없음"
             }
+
+            progressBar.visibility = View.GONE
         }
     }
 
     private fun getAddressFromLocation(latitude: Double, longitude: Double): String {
-        val geocoder = Geocoder(requireContext(), Locale.getDefault())
         return try {
+            val geocoder = Geocoder(requireContext(), Locale.getDefault())
             val addresses = geocoder.getFromLocation(latitude, longitude, 1)
-            if (addresses != null && addresses.isNotEmpty()) {
-                val address = addresses[0]
-                address.getAddressLine(0) ?: "주소 정보 없음"
+
+            if (!addresses.isNullOrEmpty()) {
+                addresses[0].getAddressLine(0) ?: "주소 정보 없음"
             } else {
                 "주소를 찾을 수 없음"
             }
