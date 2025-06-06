@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -129,6 +130,28 @@ class memoFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     selectedMemo.forEach { dao.delete(it) }
                     loadMemo()
+                }
+            }
+        }
+
+        binding.btnSearchMemo.setOnClickListener {
+            val query = binding.searchET.text.toString().trim()
+
+            if (query.isEmpty()) {
+                Toast.makeText(requireContext(), "검색어를 입력하세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val db = MemoDatabase.getDatabase(requireContext()).MemoDao()
+                val memoList = db.searchMemo(query)
+
+
+                withContext(Dispatchers.Main) {
+                    if (memoList.isEmpty()) {
+                        Toast.makeText(requireContext(), "검색 결과가 없습니다", Toast.LENGTH_SHORT).show()
+                    }
+                    adapter.updateData(memoList.toMutableList())   // RecyclerView adapter에 결과 전달
                 }
             }
         }

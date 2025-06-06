@@ -2,6 +2,7 @@ package com.example.a0401chkmyplan
 
 import android.app.Activity
 import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.a0401chkmyplan.databinding.ActivityLocationSetBinding
@@ -11,70 +12,90 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.Locale
 
 class LocationSetActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityLocationSetBinding
     private lateinit var map: GoogleMap
 
-    private var selectedLongitude: Double = 0.0
     private var selectedLatitude: Double = 0.0
+    private var selectedLongitude: Double = 0.0
+    private lateinit var selectedLatLng: LatLng
+
+    companion object {
+        const val LOCATION_REQUEST_CODE = 1001
+        const val AUTOCOMPLETE_REQUEST_CODE = 1002
+    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLocationSetBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 저장된 위치가 있다면 인텐트로부터 받기
+        // 저장된 위치가 있다면 인텐트로부터 가져오기
         selectedLatitude = intent.getDoubleExtra("latitude", 0.0)
         selectedLongitude = intent.getDoubleExtra("longitude", 0.0)
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        // 저장 버튼 클릭 시 결과 전달
+        binding.btnSaveLocation.setOnClickListener {
+            if (this::selectedLatLng.isInitialized) {
+                val resultIntent = Intent().apply {
+                    putExtra("latitude", selectedLatLng.latitude)
+                    putExtra("longitude", selectedLatLng.longitude)
+                }
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+            }
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        val defaultLatLng = LatLng(37.5665, 126.9780) // 서울 기본값
-        val initialLatLng = if (selectedLatitude != 0.0 && selectedLongitude != 0.0) {
+        // 초기 위치 설정
+        selectedLatLng = if (selectedLatitude != 0.0 && selectedLongitude != 0.0) {
             LatLng(selectedLatitude, selectedLongitude)
         } else {
-            defaultLatLng
+            LatLng(37.5665, 126.9780) // 서울 기본값
         }
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(initialLatLng, 15f))
+        // 지도 이동 및 마커 표시
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLatLng, 15f))
+        map.addMarker(MarkerOptions().position(selectedLatLng).title("선택된 위치"))
 
-        // 초기 마커 표시 (수정모드일 경우)
-        if (initialLatLng != defaultLatLng) {
-            map.addMarker(MarkerOptions().position(initialLatLng).title("기존 저장된 위치"))
-        }
+        // 주소 표시
+        val addressStr = getAddressFromLocation(selectedLatLng.latitude, selectedLatLng.longitude)
+        binding.tvSelectedAddress.text = addressStr
 
-        // 지도 클릭 시 마커 찍고 결과 반환
+        // 지도 클릭 시 마커 갱신 및 주소 표시
         map.setOnMapClickListener { latLng ->
             map.clear()
             map.addMarker(MarkerOptions().position(latLng).title("선택된 위치"))
+            selectedLatLng = latLng
 
-            // 선택된 위도/경도 반환
-            val intent = Intent().apply {
-                putExtra("latitude", latLng.latitude)
-                putExtra("longitude", latLng.longitude)
-            }
-            setResult(RESULT_OK, intent)
-            finish()
+            val clickedAddress = getAddressFromLocation(latLng.latitude, latLng.longitude)
+            binding.tvSelectedAddress.text = clickedAddress
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == 1001 && resultCode == Activity.RESULT_OK) {
-            val lat = data?.getDoubleExtra("latitude", 0.0) ?: 0.0
-            val lng = data?.getDoubleExtra("longitude", 0.0) ?: 0.0
-
-            binding.LocCurLongtitudeLatitude.text = "위치: ($lat, $lng)"
-            selectedLatitude = lat
-            selectedLongitude = lng
+    private fun getAddressFromLocation(latitude: Double, longitude: Double): String {
+        val geocoder = Geocoder(this, Locale.getDefault())
+        return try {
+            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            if (!addresses.isNullOrEmpty()) {
+                addresses[0].getAddressLine(0) ?: "주소 정보 없음"
+            } else {
+                "주소를 찾을 수 없음"
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "주소 변환 실패"
         }
     }
 }

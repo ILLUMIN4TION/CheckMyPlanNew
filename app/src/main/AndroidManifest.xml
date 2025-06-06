@@ -20,6 +20,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyApmtNO6GXM03yXsZOXhzALMEzslk3fmR4"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyApmtNO6GXM03yXsZOXhzALMEzslk3fmR4"/>
         <receiver android:name=".notification.AlarmReceiver"/>
         <activity
             android:name=".PopupActivity"

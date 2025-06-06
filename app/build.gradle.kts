@@ -40,6 +40,7 @@ android {
     }
 
     dependencies {
+        implementation ("com.google.android.libraries.places:places:3.3.0")
 
         implementation ("androidx.room:room-runtime:2.7.1")
         kapt ("androidx.room:room-compiler:2.7.1")
