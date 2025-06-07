@@ -4,154 +4,140 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!-- 기존 레이아웃 전체를 하나로 감쌈 -->
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <!-- 전체 영역 감싸는 배경 -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/radius">
+        android:background="@drawable/radius"
+        android:padding="16dp">
 
-        <!-- 상단 버튼 + 입력 영역 -->
+        <!-- 상단 버튼 -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
 
-            <LinearLayout
-                android:layout_gravity="right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
+            <ImageView
+                android:id="@+id/bs_img_ok"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_write"
+                app:tint="#9AA6B2"
+                android:contentDescription="저장" />
 
-                <ImageView
-                    android:id="@+id/bs_img_ok"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@android:drawable/ic_menu_save"
-                    app:tint="#000000"
-                    android:layout_gravity="right"/>
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="0dp" />
 
-                <ImageView
-                    android:id="@+id/bs_img_cancel"
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/close_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-                    app:tint="#000000"
-                    android:layout_gravity="right"/>
-            </LinearLayout>
-
-            <EditText
-                android:layout_margin="10dp"
-                android:gravity="start"
-                android:id="@+id/main_bs_et"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:hint="일정 입력"/>
+            <ImageView
+                android:id="@+id/bs_img_cancel"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/close_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                app:tint="#9AA6B2"
+                android:contentDescription="닫기" />
         </LinearLayout>
 
-        <!-- 설정 항목 영역 -->
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <!-- 입력 영역 -->
+        <EditText
+            android:id="@+id/main_bs_et"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_height="200dp"
+            android:hint="일정 입력"
+            android:padding="16dp"
 
-            <!-- 시간 설정 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:gravity="top|start"
+            android:backgroundTint="#e0e0e0" />
 
-                <RelativeLayout
-                    android:id="@+id/main_bs_timeSet"
-                    android:padding="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+        <!-- 시간 설정 -->
+        <LinearLayout
+            android:id="@+id/main_bs_timeSet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="16dp">
 
-                    <ImageView
-                        android:id="@+id/main_bs_timeImg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/schedule_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-                        app:tint="#000000" />
+            <ImageView
+                android:id="@+id/main_bs_timeImg"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/schedule_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                app:tint="#000000" />
 
-                    <TextView
-                        android:paddingHorizontal="5dp"
-                        android:id="@+id/main_bs_timeTV"
-                        android:textColor="#000000"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/main_bs_timeImg"
-                        android:textStyle="bold"
-                        android:text="날짜와 시간 입력" />
-                </RelativeLayout>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/main_bs_timeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="날짜와 시간 입력"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="15sp" />
+        </LinearLayout>
 
-            <!-- 위치 설정 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <!-- 위치 설정 -->
+        <LinearLayout
+            android:id="@+id/main_bs_locSet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="12dp">
 
-                <RelativeLayout
-                    android:id="@+id/main_bs_locSet"
-                    android:padding="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/main_bs_LocImg"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/location_on_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                app:tint="#000000" />
 
-                    <ImageView
-                        android:id="@+id/main_bs_LocImg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/location_on_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-                        app:tint="#000000"/>
+            <TextView
+                android:id="@+id/main_bs_LocTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="위치를 지정해보세요"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="15sp" />
+        </LinearLayout>
 
-                    <TextView
-                        android:paddingHorizontal="5dp"
-                        android:id="@+id/main_bs_LocTV"
-                        android:textColor="#000000"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/main_bs_LocImg"
-                        android:textStyle="bold"
-                        android:text="위치를 지정해보세요" />
-                </RelativeLayout>
-            </LinearLayout>
+        <!-- 알람 설정 -->
+        <LinearLayout
+            android:id="@+id/main_bs_rptSet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp">
 
-            <!-- 알람 설정 -->
-            <LinearLayout
-                android:orientation="vertical"
-                android:id="@+id/main_bs_rptSet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/main_bs_rptImg"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_lock_idle_alarm"
+                app:tint="#000000" />
 
-                <RelativeLayout
-                    android:id="@+id/bs_timeLayout"
-                    android:padding="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/main_bs_alarmTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="알람 설정"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/main_bs_rptImg"
-                        android:layout_width="23dp"
-                        android:layout_height="23dp"
-                        android:src="@android:drawable/ic_lock_idle_alarm"
-                        app:tint="#000000"/>
-
-                    <TextView
-                        android:paddingHorizontal="5dp"
-                        android:id="@+id/main_bs_alarmTV"
-                        android:textColor="#000000"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/main_bs_rptImg"
-                        android:textStyle="bold"
-                        android:text="알람 설정" />
-                </RelativeLayout>
-            </LinearLayout>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    <!-- 로딩 ProgressBar -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="48dp"

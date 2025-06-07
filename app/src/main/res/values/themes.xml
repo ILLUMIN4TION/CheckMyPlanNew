@@ -1,8 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme._0401ChkMyPlan" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">#00ff0000</item> <!-- 혹은 투명색상 -->
     </style>
 
     <style name="Theme._0401ChkMyPlan" parent="Base.Theme._0401ChkMyPlan" />
@@ -10,4 +12,5 @@
     <style name="TimePickerTheme.Digital" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:timePickerMode">spinner</item> <!-- 디지털(스크롤) 형식 -->
     </style>
+
 </resources>

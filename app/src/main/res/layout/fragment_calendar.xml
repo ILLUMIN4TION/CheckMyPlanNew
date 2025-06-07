@@ -1,83 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    android:orientation="vertical"
     android:background="#FFFFFF"
-    android:orientation="vertical">
+    android:gravity="center_horizontal"
+    android:fitsSystemWindows="true">
 
+    <!-- 캘린더 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/radius"
         android:gravity="center"
-
-        android:elevation="10dp">
-
+        android:elevation="10dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp">
 
         <CalendarView
             android:id="@+id/cal_calView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
     </LinearLayout>
 
+    <!-- 아래 일정 리스트 + 날짜 텍스트 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="72dp"> <!-- BottomNav + FAB 영역 확보 -->
 
-        <TextView
-            android:id="@+id/calTxtView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="02월24일"
-            android:textSize="30dp"
-            android:textStyle="bold"/>
-
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="323dp"
-            android:orientation="vertical"
-            android:paddingTop="20dp">
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/calTxtView"
+                android:layout_alignBaseline="@+id/calendar_add_floating_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/cal_rv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:paddingBottom="12dp" />
 
+            <!-- FAB 버튼 -->
 
-        </LinearLayout>
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/calendar_add_floating_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/calendar_add_floating_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:gravity="center"
-            app:iconTint="@color/white"
-            app:iconSize="14dp"
-            app:iconPadding="3dp"
-            android:backgroundTint="#f8f9f8"
-            android:text="일정 추가"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/gradient_end"
+                android:text="일정 추가"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:iconPadding="3dp"
+                app:iconSize="14dp"
+                app:iconTint="@color/white" />
+        </RelativeLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cal_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="ifContentScrolls"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp" /> <!-- 일정 카드 마지막 아이템 여유공간 -->
 
 
     </LinearLayout>
-
-
-
 
 </androidx.appcompat.widget.LinearLayoutCompat>

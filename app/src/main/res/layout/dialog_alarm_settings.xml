@@ -1,43 +1,69 @@
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    card_view:cardCornerRadius="16dp"
+    card_view:cardElevation="6dp"
+    android:background="@android:color/white">
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="알림 타입 선택" android:textSize="16sp" />
+        android:layout_height="wrap_content">
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/alertTypeGroup">
-        <RadioButton
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rb_status" android:text="상태바 알림" />
+            android:text="알림 타입 선택"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingBottom="12dp"
+            android:textColor="#333333"/>
 
-        <RadioButton
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/alertTypeGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="상태바 알림" />
+
+            <RadioButton
+                android:id="@+id/rb_popup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="팝업 알림" />
+
+            <RadioButton
+                android:id="@+id/rb_fullscreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전체화면 알림" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rb_popup" android:text="팝업 알림" />
+            android:text="알림 시점 (몇 분 전)"
+            android:layout_marginTop="24dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#333333"/>
 
-
-        <RadioButton
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/etMinutesBefore"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rb_fullscreen" android:text="전체화면 알림" />
-    </RadioGroup>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="알림 시점 (몇 분 전)" android:layout_marginTop="16dp" />
-    <EditText
-        android:id="@+id/etMinutesBefore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="예: 30"
-        android:inputType="number" />
-</LinearLayout>
+            android:hint="예: 30"
+            android:inputType="number"
+            android:padding="12dp"
+            android:background="@drawable/bg_edittext_rounded"
+            android:layout_marginTop="8dp"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

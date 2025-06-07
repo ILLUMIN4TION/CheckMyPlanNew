@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    card_view:cardElevation="8dp"
+    android:layout_margin="24dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="일정을 삭제하시겠습니까?"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

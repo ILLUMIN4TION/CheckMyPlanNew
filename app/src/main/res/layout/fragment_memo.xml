@@ -1,80 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
-    android:background="#ffffff"
-    android:layout_height="match_parent">
+    android:padding="16dp"
+    android:fitsSystemWindows="true">
+
+    <!-- 검색 바 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/radius"
+        android:backgroundTint="#F8FAFC"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="4dp"
+
+        android:gravity="center_vertical">
+
         <EditText
+
             android:id="@+id/searchET"
             android:layout_width="0dp"
-            android:layout_weight="9.5"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
+            android:layout_weight="1"
             android:hint="메모를 검색해보세요!"
-            android:padding="10dp"
+            android:background="@android:color/transparent"
+            android:inputType="text"
+            android:textSize="14sp"
+            android:padding="4dp" />
 
-            android:textAlignment="center"/>
         <ImageButton
+            android:id="@+id/btn_search_memo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_search"
             android:background="@android:color/transparent"
-            android:layout_marginTop="5dp"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_search_memo"/>
+            android:contentDescription="검색"
+            android:padding="4dp" />
     </LinearLayout>
+
+    <!-- 메모 추가/삭제 버튼 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:layout_marginHorizontal="10dp"
-            android:layout_width="wrap_content"
-            android:visibility="invisible"
-            android:layout_height="wrap_content"
-            android:text="장보기"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:layout_marginBottom="12dp">
 
         <Button
             android:id="@+id/memo_floatingBtn_add"
-            android:layout_width="wrap_content"
+            android:layout_width="110dp"
+            android:layout_height="48dp"
+
+            android:backgroundTint="@color/gradient_start"
             android:text="메모 추가"
-            android:layout_height="50dp"
-            android:layout_marginLeft="60dp"
-            />
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/memo_floatingBtn_del"
-            android:layout_width="wrap_content"
-            android:text="메모 삭제"
-            android:layout_height="50dp"
             android:layout_marginLeft="10dp"
-            />
+            android:layout_width="110dp"
+            android:layout_height="48dp"
 
+            android:backgroundTint="#9AA6B2"
+            android:text="메모 삭제"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
     </LinearLayout>
-    <FrameLayout
+
+    <!-- 메모 리스트 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/memoRV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <androidx.recyclerview.widget.RecyclerView
-
-            android:id="@+id/memoRV"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scrollbarFadeDuration="0"
-            android:scrollbarSize="5dp"
-            android:scrollbarThumbVertical="@android:color/darker_gray">
-
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-
-
-
-    </FrameLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        android:scrollbarFadeDuration="0"
+        android:scrollbarSize="4dp"
+        android:scrollbarThumbVertical="@android:color/darker_gray" />
 </LinearLayout>

@@ -2,6 +2,7 @@
 package com.example.a0401chkmyplan
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,7 +46,18 @@ class TaskFragment : Fragment() {
             mutableListOf(),
             onItemClick = { schedule -> openBottomSheet(schedule) },
             onCheckChanged = { schedule -> updateScheduleCheck(schedule) },
-            onDeleteClick = { schedule -> deleteSchedule(schedule) }
+            onDeleteClick = { schedule ->
+                // 삭제 전 확인 다이얼로그
+                val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
+
+                AlertDialog.Builder(requireContext())
+                    .setView(dialogView)
+                    .setPositiveButton("삭제") { _, _ ->
+                        deleteSchedule(schedule)  // 실제 삭제 함수 호출
+                    }
+                    .setNegativeButton("취소", null)
+                    .show()
+            }
         )
 
         completeAdapter = ScheduleAdapter(
