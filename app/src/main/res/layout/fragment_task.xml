@@ -68,6 +68,7 @@
                     android:elevation="4dp">
 
                     <TextView
+                        android:id="@+id/inCompleteTaskCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="D-120"
@@ -78,7 +79,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="개인 프로젝트 완료"
+                        android:text="미완료 일정 갯수"
                         android:textColor="@color/text_primary" />
                 </LinearLayout>
             </LinearLayout>

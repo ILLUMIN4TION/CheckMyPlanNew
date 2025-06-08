@@ -42,6 +42,9 @@
                 <item android:id="@+id/nav_faq"
                     android:title="자주 묻는 질문들"
                     android:icon="@drawable/help_24px" />
+                <item android:id="@+id/nav_credit"
+                    android:icon="@drawable/icon_group"
+                    android:title="만든 사람들: 남재현, 이상진, 최동운" />
             </menu>
         </item>
     </group>

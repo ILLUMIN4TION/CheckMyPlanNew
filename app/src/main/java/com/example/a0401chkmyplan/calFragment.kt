@@ -7,9 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.a0401chkmyplan.databinding.FragmentCalendarBinding
+import com.example.a0401chkmyplan.notification.NotificationHelper
+import com.example.a0401chkmyplan.scheduleDB.ScheduleDao
 import com.example.a0401chkmyplan.scheduleDB.ScheduleDatabase
 import com.example.a0401chkmyplan.scheduleDB.ScheduleEntity
 import kotlinx.coroutines.*
@@ -22,12 +23,14 @@ class calFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: ScheduleAdapter
     private var selectedDate: Long = System.currentTimeMillis()
+    private lateinit var dao: ScheduleDao
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
+        dao = ScheduleDatabase.getDatabase(requireContext()).scheduleDao() // ✅ 초기화
         return binding.root
     }
 
@@ -42,14 +45,13 @@ class calFragment : Fragment() {
         adapter = ScheduleAdapter(
             mutableListOf(),
             onItemClick = { schedule -> openBottomSheet(schedule) },
-            onCheckChanged = { schedule -> openBottomSheet(schedule) },
+            onCheckChanged = { schedule -> updateScheduleCheck(schedule) },  // ✅ 체크 처리
             onDeleteClick = { schedule ->
                 AlertDialog.Builder(requireContext())
                     .setTitle("일정 삭제")
                     .setMessage("정말 이 일정을 삭제하시겠습니까?")
                     .setPositiveButton("예") { _, _ ->
                         CoroutineScope(Dispatchers.IO).launch {
-                            val dao = ScheduleDatabase.getDatabase(requireContext()).scheduleDao()
                             dao.delete(schedule)
                             withContext(Dispatchers.Main) {
                                 loadSchedulesForDate(selectedDate)
@@ -113,8 +115,6 @@ class calFragment : Fragment() {
 
     private fun loadSchedulesForDate(selectedMillis: Long) {
         CoroutineScope(Dispatchers.IO).launch {
-            val dao = ScheduleDatabase.getDatabase(requireContext()).scheduleDao()
-
             val startOfDay = Calendar.getInstance().apply {
                 timeInMillis = selectedMillis
                 set(Calendar.HOUR_OF_DAY, 0)
@@ -137,6 +137,22 @@ class calFragment : Fragment() {
                 adapter.submitList(list.toMutableList())
                 val sdf = SimpleDateFormat("MM월 dd일", Locale.getDefault())
                 binding.calTxtView.text = sdf.format(Date(selectedMillis))
+            }
+        }
+    }
+
+    private fun updateScheduleCheck(schedule: ScheduleEntity) {
+        val updated = schedule.copy(isComplete = !schedule.isComplete)
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.update(updated)
+
+            withContext(Dispatchers.Main) {
+                if (updated.isComplete) {
+                    NotificationHelper.cancelAlarm(requireContext(), updated.id.toLong())
+                } else {
+                    // 필요 시 알람 재등록
+                }
+                loadSchedulesForDate(selectedDate)  // ✅ 바로 리스트 갱신
             }
         }
     }

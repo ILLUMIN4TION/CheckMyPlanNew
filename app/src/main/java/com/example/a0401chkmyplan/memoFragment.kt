@@ -138,9 +138,10 @@ class memoFragment : Fragment() {
             val query = binding.searchET.text.toString().trim()
 
             if (query.isEmpty()) {
-                Toast.makeText(requireContext(), "검색어를 입력하세요", Toast.LENGTH_SHORT).show()
+                //기본값
+                loadMemo()
                 return@setOnClickListener
-            }
+            }else
 
             CoroutineScope(Dispatchers.IO).launch {
                 val db = MemoDatabase.getDatabase(requireContext()).MemoDao()

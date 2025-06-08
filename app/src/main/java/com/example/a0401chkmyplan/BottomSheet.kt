@@ -93,7 +93,7 @@ class BottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setupViews() {
-        binding.mainBsTimeSet.setOnClickListener { showAlarmSettingsDialog() }
+        binding.mainBsRptSet.setOnClickListener { showAlarmSettingsDialog() }
         binding.mainBsTimeSet.setOnClickListener { showDateTimePicker() }
         binding.mainBsLocSet.setOnClickListener { launchLocationSetActivity() }
         binding.bsImgOk.setOnClickListener { saveEvent() }

@@ -26,6 +26,7 @@ class TaskFragment : Fragment() {
     private lateinit var incompleteAdapter: ScheduleAdapter
     private lateinit var completeAdapter: ScheduleAdapter
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentTaskBinding.inflate(inflater, container, false)
         db = Room.databaseBuilder(requireContext(), ScheduleDatabase::class.java, "schedule_appDatabase").build()
@@ -134,11 +135,14 @@ class TaskFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             val incomplete = dao.getIncompleteSchedules()
             val complete = dao.getCompleteSchedules()
+            val incompleteCount = dao.getIncompleteScheduleCount() // 추가
 
             withContext(Dispatchers.Main) {
                 incompleteAdapter.submitList(incomplete)
                 completeAdapter.submitList(complete)
             }
+            //일정 갯수 표시
+            binding.inCompleteTaskCount.text = "${incompleteCount}개"
         }
     }
 }
