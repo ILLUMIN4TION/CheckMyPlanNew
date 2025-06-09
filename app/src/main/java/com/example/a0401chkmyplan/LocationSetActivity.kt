@@ -4,7 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
+import android.view.Gravity
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.a0401chkmyplan.databinding.ActivityLocationSetBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -12,6 +16,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 
 class LocationSetActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -42,6 +47,8 @@ class LocationSetActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        Toast.makeText(this, "지도를 클릭해서 위치를 지정하세요!", Toast.LENGTH_SHORT).show()
+
         // 저장 버튼 클릭 시 결과 전달
         binding.btnSaveLocation.setOnClickListener {
             if (this::selectedLatLng.isInitialized) {
@@ -52,6 +59,9 @@ class LocationSetActivity : AppCompatActivity(), OnMapReadyCallback {
                 setResult(Activity.RESULT_OK, resultIntent)
                 finish()
             }
+        }
+        binding.btnBack.setOnClickListener {
+            finish()
         }
     }
 

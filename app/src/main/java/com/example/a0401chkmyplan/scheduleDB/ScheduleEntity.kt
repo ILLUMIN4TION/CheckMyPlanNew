@@ -12,7 +12,7 @@ data class ScheduleEntity(
     //위치정보를 저장하기 위한 변수들
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val alarmType: String = "status",             // ✅ 추가
-    val alarmOffsetMinutes: Int = 30,
+    val alarmType: String,          // ✅ 추가
+    val alarmOffsetMinutes: Int
 //    val useDday: Boolean = false
 )

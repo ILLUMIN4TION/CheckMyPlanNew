@@ -100,7 +100,7 @@ class calFragment : Fragment() {
                 putLong("timeMillis", schedule.timeMillis)
                 putString("desc", schedule.desc)
                 putString("alarmType", schedule.alarmType)
-                putInt("alarmOffsetMinutes", schedule.alarmOffsetMinutes)
+                putInt("alarmMinutesBefore", schedule.alarmOffsetMinutes)
                 putDouble("latitude", schedule.latitude ?: Double.NaN)
                 putDouble("longitude", schedule.longitude ?: Double.NaN)
             }

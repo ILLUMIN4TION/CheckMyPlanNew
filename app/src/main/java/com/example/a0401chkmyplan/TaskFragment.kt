@@ -4,6 +4,7 @@ package com.example.a0401chkmyplan
 import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -92,11 +93,12 @@ class TaskFragment : Fragment() {
     private fun openBottomSheet(schedule: ScheduleEntity) {
         val bottomSheet = BottomSheet().apply {
             arguments = Bundle().apply {
+                Log.d("larmTest",schedule.alarmOffsetMinutes.toString())
                 putInt("id", schedule.id)
                 putLong("timeMillis", schedule.timeMillis)
                 putString("desc", schedule.desc)
                 putString("alarmType", schedule.alarmType)
-                putInt("alarmOffsetMinutes", schedule.alarmOffsetMinutes)
+                putInt("alarmMinutesBefore", schedule.alarmOffsetMinutes)
                 putDouble("latitude", schedule.latitude ?: Double.NaN)        // ✅ 이 두 줄이 중요
                 putDouble("longitude", schedule.longitude ?: Double.NaN)
             }

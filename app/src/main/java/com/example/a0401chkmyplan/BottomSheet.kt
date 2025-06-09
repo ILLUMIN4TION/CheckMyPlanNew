@@ -4,6 +4,7 @@ import android.app.*
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,8 +89,13 @@ class BottomSheet : BottomSheetDialogFragment() {
                 binding.mainBsLocTV.text = "위치: ${getAddressFromLocation(lat, lng)}"
             }
         }
+        val hasAlarm = alarmType.isNotEmpty() && alarmMinutesBefore > 0
 
-        binding.mainBsAlarmTV.text = "${alarmMinutesBefore}분 전, 유형: $alarmType"
+        binding.mainBsAlarmTV.text = when{
+            scheduleId == null -> "알림을 설정해보세요"
+            !hasAlarm -> "알림을 설정해보세요"
+            else -> "${alarmMinutesBefore}분 전, 유형: $alarmType"
+        }
     }
 
     private fun setupViews() {
@@ -121,29 +127,45 @@ class BottomSheet : BottomSheetDialogFragment() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alarm_settings, null)
         val alertTypeGroup = dialogView.findViewById<RadioGroup>(R.id.alertTypeGroup)
         val etMinutesBefore = dialogView.findViewById<EditText>(R.id.etMinutesBefore)
+        Log.d("BottomSheet", "alarmMinutesBefore: $alarmMinutesBefore, alarmType: $alarmType")
 
-        AlertDialog.Builder(requireContext())
+
+        val dialog = AlertDialog.Builder(requireContext())
             .setTitle("알림 설정")
             .setView(dialogView)
-            .setPositiveButton("확인") { _, _ ->
+            .setPositiveButton("확인", null)
+            .setNegativeButton("취소", null)
+            .create()
+
+        dialog.setOnShowListener {
+            // ✅ 여기서 값을 세팅해야 정상 작동함
+            when (alarmType) {
+                "popup" -> alertTypeGroup.check(R.id.rb_popup)
+                "fullscreen" -> alertTypeGroup.check(R.id.rb_fullscreen)
+                else -> alertTypeGroup.check(R.id.rb_status)
+            }
+            etMinutesBefore.setText(alarmMinutesBefore.toString())
+
+            // 확인 버튼 클릭 처리
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val selectedType = when (alertTypeGroup.checkedRadioButtonId) {
                     R.id.rb_popup -> "popup"
                     R.id.rb_fullscreen -> "fullscreen"
                     else -> "status"
                 }
+
                 alarmType = selectedType
                 alarmMinutesBefore = etMinutesBefore.text.toString().toIntOrNull() ?: 30
                 isAlarmConfigure = true
                 binding.mainBsAlarmTV.text = "${alarmMinutesBefore}분 전, 유형: $alarmType"
+                dialog.dismiss()
             }
-            .setNegativeButton("취소", null)
-            .show()
+        }
+
+        dialog.show()
     }
-
     private fun launchLocationSetActivity() {
-        // 👉 프로그레스바 표시
         binding.progressBar.visibility = View.VISIBLE
-
         val intent = Intent(context, LocationSetActivity::class.java)
         selectedLatitude?.let { lat -> selectedLongitude?.let { lng ->
             intent.putExtra("latitude", lat)
@@ -211,7 +233,7 @@ class BottomSheet : BottomSheetDialogFragment() {
                 isComplete = false,
                 latitude = selectedLatitude,
                 longitude = selectedLongitude,
-                alarmType = alarmType,
+                alarmType = if(isAlarmConfigure) alarmType else "",
                 alarmOffsetMinutes = alarmMinutesBefore
             )
 
@@ -261,6 +283,4 @@ class BottomSheet : BottomSheetDialogFragment() {
     }
 
     var onScheduleSavedListener: OnScheduleSavedListener? = null
-
-
 }
