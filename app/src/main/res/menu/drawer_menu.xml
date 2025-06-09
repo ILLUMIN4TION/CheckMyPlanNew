@@ -1,10 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/nav_home"
-        android:title="홈" />
-    <item
-        android:id="@+id/nav_settings"
-        android:title="설정" />
+    <group android:checkableBehavior="none">
+        <item android:title="카테고리">
+            <menu>
+                <item android:id="@+id/nav_task"
+                    android:title="해야 할 일"
+                    android:icon="@drawable/list_alt_24px"
+                    />
+                <item android:id="@+id/nav_health"
+                    android:title="생일"
+                    android:icon="@drawable/list_alt_24px"
+                    />
+                <item android:id="@+id/nav_sports"
+                    android:title="운동"
+                    android:icon="@drawable/list_alt_24px"
+                    />
+            </menu>
+        </item>
+
+        <item android:title="캘린더 관리">
+            <menu>
+                <item android:id="@+id/nav_regular"
+                    android:title="정규일"
+                    android:icon="@drawable/edit_calendar_24px"
+                    />
+                <item android:id="@+id/nav_cycle"
+                    android:title="행사"
+                    android:icon="@drawable/edit_calendar_24px"
+                    />
+            </menu>
+        </item>
+
+        <item android:title="앱 관리">
+            <menu>
+                <item android:id="@+id/nav_data"
+                    android:title="데이터"
+                    android:icon="@drawable/perm_media_24px" />
+                <item android:id="@+id/nav_places"
+                    android:title="자주 가는 장소"
+                    android:icon="@drawable/location_on_24px"/>
+                <item android:id="@+id/nav_faq"
+                    android:title="자주 묻는 질문들"
+                    android:icon="@drawable/help_24px" />
+                <item android:id="@+id/nav_credit"
+                    android:icon="@drawable/icon_group"
+                    android:title="만든 사람들: 남재현, 이상진, 최동운" />
+            </menu>
+        </item>
+    </group>
+
 </menu>

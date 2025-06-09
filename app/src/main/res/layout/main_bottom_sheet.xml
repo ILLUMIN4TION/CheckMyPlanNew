@@ -12,17 +12,28 @@
         android:orientation="vertical"
         android:layout_weight="1">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_margin="10dp">
             <ImageView
-
+                android:id="@+id/bs_img_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_save"
+                app:tint="#000000"
+                android:layout_gravity="right"/>
+            <ImageView
+                android:id="@+id/bs_img_cancel"
+                android:layout_marginLeft="10dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/close_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
                 app:tint="#000000"
                 android:layout_gravity="right"/>
+
+
         </LinearLayout>
 
         <EditText
@@ -45,9 +56,9 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/main_bs_timeImg"
@@ -57,14 +68,14 @@
                     app:tint="#000000" />
 
                 <TextView
-                    android:paddingHorizontal="5dp"
                     android:id="@+id/main_bs_timeTV"
-                    android:textColor="#000000"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/main_bs_timeImg"
-                    android:textStyle="bold"
-                    android:text="오전 00시 ~ 오후 00시" />
+                    android:paddingHorizontal="5dp"
+                    android:text="날짜 및 시간 선택"
+                    android:textColor="#000000"
+                    android:textStyle="bold" />
             </RelativeLayout>
 
         </LinearLayout>

@@ -1,217 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    android:orientation="vertical"
     android:background="#FFFFFF"
-    android:orientation="vertical">
+    android:gravity="center_horizontal"
+    android:fitsSystemWindows="true">
 
+    <!-- 캘린더 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/radius"
         android:gravity="center"
-
-        android:elevation="10dp">
-
-
+        android:elevation="10dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp">
 
         <CalendarView
-            android:id="@+id/calView"
+            android:id="@+id/cal_calView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <!-- 아래 일정 리스트 + 날짜 텍스트 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="72dp"> <!-- BottomNav + FAB 영역 확보 -->
 
-        <TextView
-            android:id="@+id/calendarTxtView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="02월24일"
-            android:textSize="30dp"
-            android:textStyle="bold"/>
-
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="323dp"
-            android:orientation="vertical"
-            android:paddingTop="20dp">
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/calTxtView"
+                android:layout_alignBaseline="@+id/calendar_add_floating_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-            <RelativeLayout
-                android:id="@+id/cal_task_box1"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_gravity="start
-"
-                android:layout_margin="10dp"
-                android:background="@drawable/radius"
-                android:backgroundTint="#f5f5f5"
-                android:gravity="center_vertical">
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:paddingBottom="12dp" />
 
-                <CheckBox
-                    android:id="@+id/CalCheck1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+            <!-- FAB 버튼 -->
 
-                </CheckBox>
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/calendar_add_floating_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/CalCheck1"
-                    android:layout_toRightOf="@+id/CalCheck1"
-                    android:text="모바일앱 과제 제출하기"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/gradient_end"
+                android:text="일정 추가"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:iconPadding="3dp"
+                app:iconSize="14dp"
+                app:iconTint="@color/white" />
+        </RelativeLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/CalCheck1"
-                    android:layout_toRightOf="@+id/CalCheck1"
-                    android:text="03.20 오후 11시 59분"
-                    android:textSize="10dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_gravity="start"
-                android:layout_margin="10dp"
-                android:background="@drawable/radius"
-                android:backgroundTint="#f5f5f5"
-                android:gravity="center_vertical">
-
-                <CheckBox
-                    android:id="@+id/CalCheck2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                </CheckBox>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/CalCheck2"
-                    android:layout_toRightOf="@+id/CalCheck2"
-                    android:text="모바일앱 과제 제출하기"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/CalCheck2"
-                    android:layout_toRightOf="@+id/CalCheck2"
-                    android:text="03.20 오후 11시 59분"
-                    android:textSize="10dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_gravity="start"
-                android:layout_margin="10dp"
-                android:background="@drawable/radius"
-                android:backgroundTint="#f5f5f5"
-                android:gravity="center_vertical">
-
-                <CheckBox
-                    android:id="@+id/CalCheck03"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                </CheckBox>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/CalCheck03"
-                    android:layout_toRightOf="@+id/CalCheck03"
-                    android:text="모바일앱 과제 제출하기"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/CalCheck03"
-                    android:layout_toRightOf="@+id/CalCheck03"
-                    android:text="03.20 오후 11시 59분"
-                    android:textSize="10dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_gravity="start"
-                android:layout_margin="10dp"
-                android:background="@drawable/radius"
-                android:backgroundTint="#f5f5f5"
-                android:gravity="center_vertical">
-
-                <CheckBox
-                    android:id="@+id/CalCheck4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                </CheckBox>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/CalCheck4"
-                    android:layout_toRightOf="@+id/CalCheck4"
-                    android:text="모바일앱 과제 제출하기"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/CalCheck4"
-                    android:layout_toRightOf="@+id/CalCheck4"
-                    android:text="03.20 오후 11시 59분"
-                    android:textSize="10dp" />
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/calendar_add_floating_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:gravity="center"
-            app:iconTint="@color/white"
-            app:iconSize="14dp"
-            app:iconPadding="3dp"
-            android:backgroundTint="#f8f9f8"
-            android:text="일정 추가"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cal_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="ifContentScrolls"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp" /> <!-- 일정 카드 마지막 아이템 여유공간 -->
 
 
     </LinearLayout>
-
-
-
 
 </androidx.appcompat.widget.LinearLayoutCompat>

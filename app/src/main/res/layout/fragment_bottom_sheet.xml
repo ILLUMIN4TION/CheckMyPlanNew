@@ -1,139 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/radius">
+    android:layout_height="wrap_content">
 
+    <!-- 전체 영역 감싸는 배경 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="1">
+        android:background="@drawable/radius"
+        android:padding="16dp">
+
+        <!-- 상단 버튼 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10dp">
-            <ImageView
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/bs_img_ok"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_write"
+                app:tint="#9AA6B2"
+                android:contentDescription="저장" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="0dp" />
+
+            <ImageView
+                android:id="@+id/bs_img_cancel"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/close_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-                app:tint="#000000"
-                android:layout_gravity="right"/>
+                app:tint="#9AA6B2"
+                android:contentDescription="닫기" />
         </LinearLayout>
 
+        <!-- 입력 영역 -->
         <EditText
-            android:layout_margin="10dp"
-            android:gravity="start"
             android:id="@+id/main_bs_et"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:text="3월24일까지 과제제출, 반드시하기." />
-    </LinearLayout>
+            android:hint="일정 입력"
+            android:padding="16dp"
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1">
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:gravity="top|start"
+            android:backgroundTint="#e0e0e0" />
 
+        <!-- 시간 설정 -->
         <LinearLayout
+            android:id="@+id/main_bs_timeSet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="16dp">
 
-            <RelativeLayout
-                android:id="@+id/main_bs_timeSet"
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/main_bs_timeImg"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/schedule_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                app:tint="#000000" />
 
-                <ImageView
-                    android:id="@+id/main_bs_timeImg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/schedule_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-                    app:tint="#000000" />
-
-                <TextView
-                    android:paddingHorizontal="5dp"
-                    android:id="@+id/main_bs_timeTV"
-                    android:textColor="#000000"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/main_bs_timeImg"
-                    android:textStyle="bold"
-                    android:text="오전 00시 ~ 오후 00시" />
-            </RelativeLayout>
-
+            <TextView
+                android:id="@+id/main_bs_timeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="날짜와 시간 입력"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="15sp" />
         </LinearLayout>
 
+        <!-- 위치 설정 -->
         <LinearLayout
+            android:id="@+id/main_bs_locSet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="12dp">
 
-            <RelativeLayout
-                android:id="@+id/main_bs_locSet"
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/main_bs_LocImg"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/location_on_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                app:tint="#000000" />
 
-                <ImageView
-                    android:id="@+id/main_bs_LocImg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/location_on_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-                    app:tint="#000000"/>
-
-                <TextView
-                    android:paddingHorizontal="5dp"
-                    android:id="@+id/main_bs_LocTV"
-                    android:textColor="#000000"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/main_bs_LocImg"
-                    android:textStyle="bold"
-                    android:text="대림대학교 (경기도 안양시 동안구 임곡로 29)" />
-            </RelativeLayout>
-
+            <TextView
+                android:id="@+id/main_bs_LocTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="위치를 지정해보세요"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="15sp" />
         </LinearLayout>
 
+        <!-- 알람 설정 -->
         <LinearLayout
             android:id="@+id/main_bs_rptSet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp">
 
-            <RelativeLayout
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/main_bs_rptImg"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_lock_idle_alarm"
+                app:tint="#000000" />
 
-                <ImageView
-                    android:id="@+id/main_bs_rptImg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/repeat_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-                    app:tint="#DCDCDC"/>
-
-                <TextView
-                    android:paddingHorizontal="5dp"
-                    android:id="@+id/main_bs_rptTV"
-                    android:textColor="#dcdcdc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/main_bs_rptImg"
-                    android:textStyle="bold"
-                    android:text="반복 안함" />
-            </RelativeLayout>
-
+            <TextView
+                android:id="@+id/main_bs_alarmTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="알람 설정"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="15sp" />
         </LinearLayout>
+    </LinearLayout>
 
-
-
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <!-- 로딩 ProgressBar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminate="true"
+        style="?android:attr/progressBarStyleLarge" />
+</FrameLayout>

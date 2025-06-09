@@ -4,61 +4,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#d5d5d5">
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/selImgView"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/image_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-            app:tint="#FFFFFF"/>
+        <!-- 제목 -->
+        <EditText
+            android:id="@+id/et_memo_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="제목"
+            android:layout_marginRight="10dp"
+            android:layout_weight="100"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/memodetail_btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="저장"
+            android:textAllCaps="false"
+            app:cornerRadius="12dp"
+            android:layout_weight="1"
+            app:iconPadding="8dp"
+            app:iconTint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/gradient_start"/>
+
 
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_memo_detail_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Month"
-            android:textSize="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"/>
-        <TextView
-            android:id="@+id/tv_memo_detail_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Day"
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="5dp"/>
 
-    </LinearLayout>
-
-    <EditText
-        android:id="@+id/et_memo_detail"
+    <!-- 내용 -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:textSize="30dp"
         android:layout_weight="1"
-        android:text="sampleText"
-        android:gravity="start"
-        android:layout_margin="10dp"/>
+        android:hint="내용"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginTop="12dp">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_memo_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top|start"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:inputType="textMultiLine"
+            android:minLines="10" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- 하단 아이콘 (예: 공유, 삭제 등 추가 가능) -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/image_24dp_e3e3e3_fill0_wght400_grad0_opsz24"/>
     </LinearLayout>
-
 </LinearLayout>

@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
+        android:name=".memoDB.MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -12,6 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme._0401ChkMyPlan"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyApmtNO6GXM03yXsZOXhzALMEzslk3fmR4"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyApmtNO6GXM03yXsZOXhzALMEzslk3fmR4"/>
+        <receiver android:name=".notification.AlarmReceiver"/>
+        <activity
+            android:name=".PopupActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity
             android:name=".LocationSetActivity"
             android:exported="false" />

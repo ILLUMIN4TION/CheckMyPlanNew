@@ -8,11 +8,13 @@
     android:background="@color/cardview_light_background"
     android:gravity="center"
     android:orientation="vertical">
-    
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="fitCenter"
         android:src="@drawable/_zc9_yprvhwfvvwfcnqusxwhqn3ce1deq8tzrkftat3d2fm0pzz4z85ee7bz2s0ly_kxjqye_f6bb0_z3vngruzcigehdnclkbsq8e1nniadnme1hc4j9gg5izmht_wi9ddl65o_muut6hn7ddfwhq"
-        android:scaleType="centerCrop"/>
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

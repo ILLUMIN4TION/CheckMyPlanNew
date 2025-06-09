@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/radioGroupType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioStatus"
+            android:text="상태바 알림" />
+
+        <RadioButton android:id="@+id/radioPopup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="팝업 알림" />
+
+        <RadioButton android:id="@+id/radioFullscreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전체화면 알림" />
+
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editMinutesBefore"
+        android:hint="몇 분 전에 알림?"
+        android:inputType="number" />
+
+
+</LinearLayout>
